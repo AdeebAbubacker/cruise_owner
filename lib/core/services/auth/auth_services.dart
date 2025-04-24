@@ -72,6 +72,7 @@ class AuthServices {
       'email': email,
       'password': password,
       'password_confirmation': confirmPassword,
+      'user_type': 'owner',
     };
 
     try {
@@ -168,3 +169,6 @@ class AuthServices {
     }
   }
 }
+//-----
+//----\
+//----
