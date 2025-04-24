@@ -15,6 +15,7 @@ import 'package:cruise_buddy/core/view_model/login/login_bloc.dart';
 import 'package:cruise_buddy/core/view_model/postGoogleId/post_google_bloc.dart';
 import 'package:cruise_buddy/core/view_model/regsiter/register_bloc.dart';
 import 'package:cruise_buddy/core/view_model/removeItemFromFavourites/remove_item_favourites_bloc.dart';
+import 'package:cruise_buddy/core/view_model/seeMyBookingList/see_my_booking_list_bloc.dart';
 import 'package:cruise_buddy/firebase_options.dart';
 import 'package:cruise_buddy/test_folder/gpay_tedst.dart';
 
@@ -77,6 +78,8 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => BookMyCruiseBloc(),
+        ), BlocProvider(
+          create: (context) => SeeMyBookingListBloc(),
         ),
       ],
       child: MaterialApp(
