@@ -31,7 +31,5 @@ class GetUserProfileBloc
             GetUserProfileState.getuserFailure(error: 'An error occurred: $e'));
       }
     });
-  
-  
   }
 }

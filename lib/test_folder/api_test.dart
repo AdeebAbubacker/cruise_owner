@@ -1,4 +1,9 @@
+import 'package:cruise_buddy/core/services/bookingCount/booking_count_servcie.dart';
+import 'package:cruise_buddy/core/services/ownerPacakage/owner_packages_service.dart';
+import 'package:cruise_buddy/core/services/seeMyBookingList/seeMyBookingListService.dart';
 import 'package:cruise_buddy/core/view_model/bookMyCruise/book_my_cruise_bloc.dart';
+import 'package:cruise_buddy/core/view_model/seeMyBookingList/see_my_booking_list_bloc.dart';
+import 'package:cruise_buddy/core/view_model/upcomingbookingscount/upcomg_bookingscount_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,32 +16,31 @@ class ApiTest extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            BlocBuilder<BookMyCruiseBloc, BookMyCruiseState>(
+            SizedBox(height: 100),
+            BlocBuilder<UpcomgBookingscountBloc, UpcomgBookingscountState>(
               builder: (context, state) {
                 return state.map(
                   initial: (value) {
-                    return Text("ffffffffffffffff");
+                    return Text("0");
                   },
                   loading: (value) {
-                    return Text("hhhhhhhhhhhhhhhhhhhhhhh");
+                    return Text("0");
                   },
-                  getBookedBoats: (value) {
-                    return Text("ttttttttttttttttttttt");
+                  upcmingCount: (value) {
+                    return Text("${value.upcomingCount}");
                   },
-                  getBookedFailure: (value) {
-                    return Text("cghfgjcgfj");
+                  upcomingcountFailure: (value) {
+                    return Text("0");
                   },
                   noInternet: (value) {
-                    return Text("uuuuuuuuuuuuuuuuuu");
+                    return Text("0");
                   },
                 );
               },
             ),
-            SizedBox(height: 100),
             ElevatedButton(
-              onPressed: () {
-                BlocProvider.of<BookMyCruiseBloc>(context)
-                    .add(BookMyCruiseEvent.createNewbookings(date: 'd'));
+              onPressed: () async {
+                await OwnerPackagesService().getOwnerspackages();
               },
               child: Text("data"),
             ),

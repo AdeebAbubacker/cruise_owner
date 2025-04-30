@@ -12,7 +12,7 @@ class DetailsDelegate extends StatefulWidget {
   final String? location;
   const DetailsDelegate({
     super.key,
-     this.location,
+    this.location,
   });
 
   @override

@@ -37,7 +37,7 @@ class AppRoutes {
     );
   }
 
-   static navigateToRegistartionScreen(BuildContext context) {
+  static navigateToRegistartionScreen(BuildContext context) {
     return Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const SignupScreen()),

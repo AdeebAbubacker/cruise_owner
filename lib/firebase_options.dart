@@ -42,7 +42,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyD6RPgGV4xZTDoF6hWUTDytqjOF_uizCaE',
-    appId: '1:261245076643:android:17acf4a51777917114ab16',
+    appId: '1:261245076643:android:5caed2b56f45890314ab16',
     messagingSenderId: '261245076643',
     projectId: 'cruisebuddy-e3b41',
     storageBucket: 'cruisebuddy-e3b41.firebasestorage.app',
@@ -50,13 +50,15 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC6YUfin8PFCViLvD-S2AjuEkqRF6oTFqA',
-    appId: '1:261245076643:ios:88843e8c991e8ede14ab16',
+    appId: '1:261245076643:ios:3d110ae54d4ca0e714ab16',
     messagingSenderId: '261245076643',
     projectId: 'cruisebuddy-e3b41',
     storageBucket: 'cruisebuddy-e3b41.firebasestorage.app',
-    androidClientId: '261245076643-6fa94m9de0nmbe118f5b1j80vc7e6oe8.apps.googleusercontent.com',
-    iosClientId: '261245076643-u3i3iacidsaorbo02nag82l9h7913u0u.apps.googleusercontent.com',
-    iosBundleId: 'com.example.cruiseBuddy',
+    androidClientId:
+        '261245076643-6fa94m9de0nmbe118f5b1j80vc7e6oe8.apps.googleusercontent.com',
+    iosClientId:
+        '261245076643-0m93hj1k08kvum8ipune92l0coo29g67.apps.googleusercontent.com',
+    iosBundleId: 'com.cruiseowner.app',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
@@ -75,8 +77,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '700263567498',
     projectId: 'pokemon-6a137',
     storageBucket: 'pokemon-6a137.firebasestorage.app',
-    androidClientId: '700263567498-3phtfhs977nkg22q0kpnufqmk52b54tl.apps.googleusercontent.com',
-    iosClientId: '700263567498-uot5h96ocu72s2qovffn4lkrah65jr2c.apps.googleusercontent.com',
+    androidClientId:
+        '700263567498-3phtfhs977nkg22q0kpnufqmk52b54tl.apps.googleusercontent.com',
+    iosClientId:
+        '700263567498-uot5h96ocu72s2qovffn4lkrah65jr2c.apps.googleusercontent.com',
     iosBundleId: 'com.example.cruiseBuddy',
   );
 
@@ -89,5 +93,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'pokemon-6a137.firebasestorage.app',
     measurementId: 'G-XJXTPZ3C38',
   );
-
 }

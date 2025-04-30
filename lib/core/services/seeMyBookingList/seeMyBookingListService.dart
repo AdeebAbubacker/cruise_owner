@@ -38,8 +38,7 @@ class Seemybookinglistservice {
       _headers['Authorization'] = 'Bearer $token';
 
       final response = await http.get(
-        Uri.parse(
-            '$url/owner/my/booking'),
+        Uri.parse('$url/owner/my/booking?include=user'),
         headers: _headers,
       );
 

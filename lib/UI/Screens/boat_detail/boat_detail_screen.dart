@@ -69,7 +69,6 @@ class _BoatDetailScreenState extends State<BoatDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           
             Stack(
               children: [
                 SizedBox(

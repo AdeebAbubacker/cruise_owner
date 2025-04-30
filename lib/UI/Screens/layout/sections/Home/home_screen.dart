@@ -5,9 +5,13 @@ import 'package:cruise_buddy/UI/Screens/layout/sections/Home/widgets/location_se
 import 'package:cruise_buddy/UI/Screens/layout/sections/boats/widgets/featured_boats_container.dart';
 import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/view_model/getUserProfile/get_user_profile_bloc.dart';
+import 'package:cruise_buddy/core/view_model/seeMyBookingList/see_my_booking_list_bloc.dart';
+import 'package:cruise_buddy/core/view_model/todaysbookingcount/todays_booking_count_bloc.dart';
+import 'package:cruise_buddy/core/view_model/upcomingbookingscount/upcomg_bookingscount_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,6 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       BlocProvider.of<GetUserProfileBloc>(context)
           .add(GetUserProfileEvent.getUserProfile());
+      BlocProvider.of<SeeMyBookingListBloc>(context)
+          .add(SeeMyBookingListEvent.getBookingList());
+      BlocProvider.of<TodaysBookingCountBloc>(context)
+          .add(TodaysBookingCountEvent.getTodayscount());
+      BlocProvider.of<UpcomgBookingscountBloc>(context)
+          .add(UpcomgBookingscountEvent.getUpcomingcount());
     });
     super.initState();
   }
@@ -166,15 +176,67 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.all(12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text("Upcoming Bookings",
+                          children: [
+                            Text("Todays Bookings",
                                 style: TextStyle(color: Colors.white)),
                             SizedBox(height: 8),
-                            Text("21",
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white)),
+                            BlocBuilder<TodaysBookingCountBloc,
+                                TodaysBookingCountState>(
+                              builder: (context, state) {
+                                return state.map(
+                                  initial: (value) {
+                                    return Text(
+                                      "21",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  loading: (value) {
+                                    return Text(
+                                      "0",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  noInternet: (value) {
+                                    return Text(
+                                      "0",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  todaysCount: (value) {
+                                    return Text(
+                                      "${value.todaysCount ?? 0}",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  todayscountFailure: (value) {
+                                    return Text(
+                                      "0",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -191,15 +253,72 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.all(12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text("Past Bookings",
+                          children: [
+                            Text("Upcoming Bookings",
                                 style: TextStyle(color: Colors.white)),
                             SizedBox(height: 8),
-                            Text("15",
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white)),
+                            BlocBuilder<UpcomgBookingscountBloc,
+                                UpcomgBookingscountState>(
+                              builder: (context, state) {
+                                return state.map(
+                                  initial: (value) {
+                                    return Text(
+                                      "0",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  loading: (value) {
+                                    return Text(
+                                      "0",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  upcmingCount: (value) {
+                                    return Text(
+                                      "${value.upcomingCount}",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  upcomingcountFailure: (value) {
+                                    return Text(
+                                      "0",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  noInternet: (value) {
+                                    return Text(
+                                      "0",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                );
+                                // Text("15",
+                                //     style: TextStyle(
+                                //         fontSize: 24,
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.white));
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -211,84 +330,6 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 20,
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(
-            //     left: 30,
-            //     right: 10,
-            //   ),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Text(
-            //         "Booking History",
-            //         style: TextStyles.ubuntu20black15w700,
-            //       ),
-            //       Text("Today"),
-            //       Row(
-            //         children: [
-            //           Column(
-            //             crossAxisAlignment: CrossAxisAlignment.start,
-            //             children: [
-            //               SvgPicture.asset(
-            //                 "assets/CircledArrow.svg",
-            //                 width: 40,
-            //               ),
-            //               Text("23:22"),
-            //             ],
-            //           ),
-            //           SizedBox(width: 10),
-            //           Column(
-            //             crossAxisAlignment: CrossAxisAlignment.start,
-            //             children: [
-            //               Text("Rohan Jacob"),
-            //               Text("Transaction ID: 193762781"),
-            //               SizedBox(height: 20)
-            //             ],
-            //           ),
-            //           Spacer(),
-            //           Text("Booked"),
-            //         ],
-            //       ),
-            //       Text("27, Wednesday, 2024"),
-            //       // ListView.builder(
-            //       //   shrinkWrap: true,
-            //       //   physics: NeverScrollableScrollPhysics(),
-            //       //   itemCount: 10,
-            //       //   itemBuilder: (context, index) {
-            //       //     return Row(
-            //       //       children: [
-            //       //         Column(
-            //       //           crossAxisAlignment: CrossAxisAlignment.start,
-            //       //           children: [
-            //       //             SvgPicture.asset(
-            //       //               "assets/CircledArrow.svg",
-            //       //               width: 40,
-            //       //             ),
-            //       //             Text("23:22"),
-            //       //           ],
-            //       //         ),
-            //       //         SizedBox(width: 10),
-            //       //         Column(
-            //       //           crossAxisAlignment: CrossAxisAlignment.start,
-            //       //           children: [
-            //       //             Text("Rohan Jacob"),
-            //       //             Text("Transaction ID: 193762781"),
-            //       //             SizedBox(height: 20)
-            //       //           ],
-            //       //         ),
-            //       //         Spacer(),
-            //       //         Text("Booked"),
-            //       //       ],
-            //       //     );
-            //       //   },
-            //       // )
-
-            //     TransactionList(),
-
-            //     ],
-            //   ),
-            // ),
-
             BookingHistoryScreen(),
             SizedBox(height: 60),
           ],
@@ -384,24 +425,51 @@ class BookingHistoryScreen extends StatelessWidget {
                 GoogleFonts.ubuntu(fontSize: 20, fontWeight: FontWeight.w700),
           ),
           SizedBox(height: 10),
-          Text(
-            "Today",
-            style:
-                GoogleFonts.ubuntu(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          ...transactionsToday.map((txn) => TransactionTile(txn)),
-          SizedBox(height: 20),
-          Text(
-            "27, Wednesday, 2024",
-            style:
-                GoogleFonts.ubuntu(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: transactionsPrevious.length,
-            itemBuilder: (context, index) {
-              return TransactionTile(transactionsPrevious[index]);
+          BlocBuilder<SeeMyBookingListBloc, SeeMyBookingListState>(
+            builder: (context, state) {
+              return state.map(
+                initial: (value) {
+                  return Column(
+                    children: [
+                      SizedBox(height: 40),
+                      Center(child: CircularProgressIndicator()),
+                    ],
+                  );
+                },
+                loading: (value) {
+                  return CircularProgressIndicator();
+                },
+                getuseruccess: (value) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: value.userprofilemodel.data?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      print(
+                          "name '${value.userprofilemodel.data?[index]?.user?.name}");
+                      return TransactionTile(
+                        name:
+                            '${value.userprofilemodel.data?[index]?.user?.name}',
+                        transactionId:
+                            '${value.userprofilemodel.data?[index].invoiceId}',
+                        time:
+                            '${value.userprofilemodel.data?[index].startDate}',
+                      );
+                    },
+                  );
+                },
+                getuserFailure: (value) {
+                  return Column(
+                    children: [
+                      SizedBox(height: 40),
+                      Center(child: Text("No Bookings Available")),
+                    ],
+                  );
+                },
+                noInternet: (value) {
+                  return Text("No Internet");
+                },
+              );
             },
           ),
         ],
@@ -411,9 +479,36 @@ class BookingHistoryScreen extends StatelessWidget {
 }
 
 class TransactionTile extends StatelessWidget {
-  final Map<String, String> txn;
+  final String name;
+  final String transactionId;
+  final String time;
 
-  TransactionTile(this.txn);
+  const TransactionTile({
+    super.key,
+    required this.name,
+    required this.transactionId,
+    required this.time,
+  });
+  String formatDateWithSuffix(String dateStr) {
+    final date = DateTime.parse(dateStr);
+
+    // Get day with suffix
+    String day = date.day.toString();
+    String suffix;
+    if (day.endsWith('1') && day != '11') {
+      suffix = 'st';
+    } else if (day.endsWith('2') && day != '12') {
+      suffix = 'nd';
+    } else if (day.endsWith('3') && day != '13') {
+      suffix = 'rd';
+    } else {
+      suffix = 'th';
+    }
+
+    final month = DateFormat('MMMM').format(date); // "March"
+    final year = date.year.toString(); // "2025"
+    return "$day$suffix $month\n$year"; // "19th March\n2025"
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -428,9 +523,13 @@ class TransactionTile extends StatelessWidget {
                 "assets/CircledArrow.svg",
                 width: 40,
               ),
-              Text(
-                txn["time"] ?? '',
-                style: GoogleFonts.ubuntu(),
+              SizedBox(
+                width: 85,
+                child: Text(
+                  formatDateWithSuffix(time),
+                  style: GoogleFonts.ubuntu(fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),
@@ -439,12 +538,16 @@ class TransactionTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                txn["name"] ?? '',
+                name ?? '',
                 style: GoogleFonts.ubuntu(fontWeight: FontWeight.bold),
               ),
               Text(
-                "Transaction ID: ${txn["id"]}",
-                style: GoogleFonts.ubuntu(),
+                "Transaction ID: $transactionId",
+                style: GoogleFonts.ubuntu(
+                  fontSize: 12,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 20),
             ],
@@ -459,6 +562,5 @@ class TransactionTile extends StatelessWidget {
     );
   }
 }
-
 
 //Cruise@2025

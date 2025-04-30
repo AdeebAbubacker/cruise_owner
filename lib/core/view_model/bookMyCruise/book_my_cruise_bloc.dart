@@ -28,10 +28,9 @@ class BookMyCruiseBloc extends Bloc<BookMyCruiseEvent, BookMyCruiseState> {
           if (failure == "No internet") {
             emit(const BookMyCruiseState.noInternet());
           } else {
-            emit(BookMyCruiseState.getBookedFailure(  error: failure));
+            emit(BookMyCruiseState.getBookedFailure(error: failure));
           }
         }, (success) async {
-
           emit(
             BookMyCruiseState.getBookedBoats(
               bookingresponse: success,
@@ -39,8 +38,8 @@ class BookMyCruiseBloc extends Bloc<BookMyCruiseEvent, BookMyCruiseState> {
           );
         });
       } catch (e) {
-        emit(BookMyCruiseState.getBookedFailure(
-            error: 'An error occurred: $e'));
+        emit(
+            BookMyCruiseState.getBookedFailure(error: 'An error occurred: $e'));
       }
     });
   }

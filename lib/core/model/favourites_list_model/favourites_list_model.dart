@@ -17,8 +17,6 @@ class FavouritesListModel {
         links: json['links'] != null ? Links.fromJson(json['links']) : null,
         meta: json['meta'] != null ? Meta.fromJson(json['meta']) : null,
       );
-
- 
 }
 
 class Datum {
@@ -488,8 +486,6 @@ class Meta {
       total: json['total'] as int?,
     );
   }
-
-
 }
 
 class Link {

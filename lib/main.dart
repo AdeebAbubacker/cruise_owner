@@ -1,4 +1,12 @@
+import 'package:cruise_buddy/UI/Login%20Without/login_withoutan_account.dart';
+import 'package:cruise_buddy/UI/Screens/Auth/login_screens.dart';
+import 'package:cruise_buddy/UI/Screens/Auth/signup_screen.dart';
+import 'package:cruise_buddy/UI/Screens/On%20Boarding/onboardingscreen_one.dart';
+import 'package:cruise_buddy/UI/Screens/On%20Boarding/onboardingscreen_three.dart';
+import 'package:cruise_buddy/UI/Screens/On%20Boarding/onboardingscreen_two.dart';
 import 'package:cruise_buddy/UI/Screens/Splash/splash_screen.dart';
+import 'package:cruise_buddy/UI/Screens/boat_detail/boat_detail_screen.dart';
+import 'package:cruise_buddy/UI/Screens/layout/main_layout/main_layout.dart';
 import 'package:cruise_buddy/UI/Screens/misc/booking_requests_screen.dart';
 import 'package:cruise_buddy/UI/Screens/misc/notifications_screen.dart';
 import 'package:cruise_buddy/core/constants/functions/error/custom_error.dart';
@@ -11,13 +19,18 @@ import 'package:cruise_buddy/core/view_model/getLocationDetails/get_location_det
 import 'package:cruise_buddy/core/view_model/getSearchCruiseResults/get_seached_cruiseresults_bloc.dart';
 import 'package:cruise_buddy/core/view_model/getUserProfile/get_user_profile_bloc.dart';
 import 'package:cruise_buddy/core/view_model/listCruiseonLocation/list_cruiseon_location_bloc.dart';
+import 'package:cruise_buddy/core/view_model/listOwnerpackages/listowner_packages_bloc.dart';
 import 'package:cruise_buddy/core/view_model/login/login_bloc.dart';
 import 'package:cruise_buddy/core/view_model/postGoogleId/post_google_bloc.dart';
 import 'package:cruise_buddy/core/view_model/regsiter/register_bloc.dart';
 import 'package:cruise_buddy/core/view_model/removeItemFromFavourites/remove_item_favourites_bloc.dart';
 import 'package:cruise_buddy/core/view_model/seeMyBookingList/see_my_booking_list_bloc.dart';
+import 'package:cruise_buddy/core/view_model/todaysbookingcount/todays_booking_count_bloc.dart';
+import 'package:cruise_buddy/core/view_model/upcomingbookingscount/upcomg_bookingscount_bloc.dart';
 import 'package:cruise_buddy/firebase_options.dart';
+import 'package:cruise_buddy/test_folder/api_test.dart';
 import 'package:cruise_buddy/test_folder/gpay_tedst.dart';
+import 'package:cruise_buddy/test_folder/popup_test.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +91,18 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => BookMyCruiseBloc(),
-        ), BlocProvider(
+        ),
+        BlocProvider(
           create: (context) => SeeMyBookingListBloc(),
+        ),
+        BlocProvider(
+          create: (context) => TodaysBookingCountBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UpcomgBookingscountBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ListownerPackagesBloc(),
         ),
       ],
       child: MaterialApp(
@@ -108,3 +131,6 @@ class MyApp extends StatelessWidget {
 //https://www.youtube.com/watch?v=KfVeYXAtGAM
 
 //----------------------
+
+// SHA1: B6:F4:F2:1B:B3:29:00:7E:CF:0D:F4:E5:A9:34:4A:E6:7B:35:32:D8
+// SHA-256: 3B:71:35:56:4E:F4:F1:5A:22:9C:95:57:D6:B2:82:1B:B9:1C:0F:D8:86:16:30:71:69:3A:92:C0:9F:00:4C:0D

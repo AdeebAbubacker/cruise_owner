@@ -1,3 +1,4 @@
+import 'package:cruise_buddy/UI/Login%20Without/login_withoutan_account.dart';
 import 'package:cruise_buddy/UI/Widgets/Button/full_width_bluebutton.dart';
 import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/routes/app_routes.dart';
@@ -222,6 +223,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: emailController,
                     focusNode: emailFocusNode,
                   ),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       Text(
@@ -229,13 +231,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyles.ubuntu16black23w700,
                       ),
                       const Spacer(),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyles.ubuntu12blue23w700,
-                        ),
-                      ),
+                      // TextButton(
+                      //   onPressed: () {},
+                      //   child: Text(
+                      //     "Forgot Password?",
+                      //     style: TextStyles.ubuntu12blue23w700,
+                      //   ),
+                      // ),
                     ],
                   ),
                   TextField(
@@ -298,200 +300,216 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text("or sign in with"),
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       child: Container(
+                  //         height: 1,
+                  //         color: Colors.grey,
+                  //       ),
+                  //     ),
+                  //     const Padding(
+                  //       padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  //       child: Text("or sign in with"),
+                  //     ),
+                  //     Expanded(
+                  //       child: Container(
+                  //         height: 1,
+                  //         color: Colors.grey,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: 12),
-                  BlocBuilder<LoginBloc, LoginState>(
-                    builder: (context, loginState) {
-                      return loginState.map(
-                        initial: (_) {
-                          return BlocBuilder<PostGoogleBloc, PostGoogleState>(
-                            builder: (context, postGoogleState) {
-                              return postGoogleState.map(
-                                initial: (_) {
-                                  return GestureDetector(
-                                    onTap: signInWithGoogle,
-                                    child: Center(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 201, 201, 201),
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child:
-                                              Image.asset("assets/Google.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                loading: (_) {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                                addedSuccess: (_) {
-                                  return GestureDetector(
-                                    onTap: signInWithGoogle,
-                                    child: Center(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 201, 201, 201),
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child:
-                                              Image.asset("assets/Google.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                addedFailure: (_) {
-                                  return GestureDetector(
-                                    onTap: signInWithGoogle,
-                                    child: Center(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 201, 201, 201),
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child:
-                                              Image.asset("assets/Google.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                noInternet: (_) {
-                                  return GestureDetector(
-                                    onTap: signInWithGoogle,
-                                    child: Center(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 201, 201, 201),
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child:
-                                              Image.asset("assets/Google.png"),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
+                  // BlocBuilder<LoginBloc, LoginState>(
+                  //   builder: (context, loginState) {
+                  //     return loginState.map(
+                  //       initial: (_) {
+                  //         return BlocBuilder<PostGoogleBloc, PostGoogleState>(
+                  //           builder: (context, postGoogleState) {
+                  //             return postGoogleState.map(
+                  //               initial: (_) {
+                  //                 return GestureDetector(
+                  //                   onTap: signInWithGoogle,
+                  //                   child: Center(
+                  //                     child: Container(
+                  //                       decoration: BoxDecoration(
+                  //                         border: Border.all(
+                  //                           color: const Color.fromARGB(
+                  //                               255, 201, 201, 201),
+                  //                         ),
+                  //                         borderRadius:
+                  //                             BorderRadius.circular(30),
+                  //                       ),
+                  //                       child: Padding(
+                  //                         padding: const EdgeInsets.all(8.0),
+                  //                         child:
+                  //                             Image.asset("assets/Google.png"),
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                 );
+                  //               },
+                  //               loading: (_) {
+                  //                 return Center(
+                  //                   child: CircularProgressIndicator(),
+                  //                 );
+                  //               },
+                  //               addedSuccess: (_) {
+                  //                 return GestureDetector(
+                  //                   onTap: signInWithGoogle,
+                  //                   child: Center(
+                  //                     child: Container(
+                  //                       decoration: BoxDecoration(
+                  //                         border: Border.all(
+                  //                           color: const Color.fromARGB(
+                  //                               255, 201, 201, 201),
+                  //                         ),
+                  //                         borderRadius:
+                  //                             BorderRadius.circular(30),
+                  //                       ),
+                  //                       child: Padding(
+                  //                         padding: const EdgeInsets.all(8.0),
+                  //                         child:
+                  //                             Image.asset("assets/Google.png"),
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                 );
+                  //               },
+                  //               addedFailure: (_) {
+                  //                 return GestureDetector(
+                  //                   onTap: signInWithGoogle,
+                  //                   child: Center(
+                  //                     child: Container(
+                  //                       decoration: BoxDecoration(
+                  //                         border: Border.all(
+                  //                           color: const Color.fromARGB(
+                  //                               255, 201, 201, 201),
+                  //                         ),
+                  //                         borderRadius:
+                  //                             BorderRadius.circular(30),
+                  //                       ),
+                  //                       child: Padding(
+                  //                         padding: const EdgeInsets.all(8.0),
+                  //                         child:
+                  //                             Image.asset("assets/Google.png"),
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                 );
+                  //               },
+                  //               noInternet: (_) {
+                  //                 return GestureDetector(
+                  //                   onTap: signInWithGoogle,
+                  //                   child: Center(
+                  //                     child: Container(
+                  //                       decoration: BoxDecoration(
+                  //                         border: Border.all(
+                  //                           color: const Color.fromARGB(
+                  //                               255, 201, 201, 201),
+                  //                         ),
+                  //                         borderRadius:
+                  //                             BorderRadius.circular(30),
+                  //                       ),
+                  //                       child: Padding(
+                  //                         padding: const EdgeInsets.all(8.0),
+                  //                         child:
+                  //                             Image.asset("assets/Google.png"),
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                 );
+                  //               },
+                  //             );
+                  //           },
+                  //         );
+                  //       },
+                  //       loading: (_) {
+                  //         return const Center(
+                  //           child: CircularProgressIndicator(),
+                  //         );
+                  //       },
+                  //       loginSuccess: (_) {
+                  //         return GestureDetector(
+                  //           onTap: signInWithGoogle,
+                  //           child: Center(
+                  //             child: Container(
+                  //               decoration: BoxDecoration(
+                  //                 border: Border.all(
+                  //                   color: const Color.fromARGB(
+                  //                       255, 201, 201, 201),
+                  //                 ),
+                  //                 borderRadius: BorderRadius.circular(30),
+                  //               ),
+                  //               child: Padding(
+                  //                 padding: const EdgeInsets.all(8.0),
+                  //                 child: Image.asset("assets/Google.png"),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       },
+                  //       loginFailure: (_) {
+                  //         return GestureDetector(
+                  //           onTap: signInWithGoogle,
+                  //           child: Center(
+                  //             child: Container(
+                  //               decoration: BoxDecoration(
+                  //                 border: Border.all(
+                  //                   color: const Color.fromARGB(
+                  //                       255, 201, 201, 201),
+                  //                 ),
+                  //                 borderRadius: BorderRadius.circular(30),
+                  //               ),
+                  //               child: Padding(
+                  //                 padding: const EdgeInsets.all(8.0),
+                  //                 child: Image.asset("assets/Google.png"),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       },
+                  //       noInternet: (_) {
+                  //         return GestureDetector(
+                  //           onTap: signInWithGoogle,
+                  //           child: Center(
+                  //             child: Container(
+                  //               decoration: BoxDecoration(
+                  //                 border: Border.all(
+                  //                   color: const Color.fromARGB(
+                  //                       255, 201, 201, 201),
+                  //                 ),
+                  //                 borderRadius: BorderRadius.circular(30),
+                  //               ),
+                  //               child: Padding(
+                  //                 padding: const EdgeInsets.all(8.0),
+                  //                 child: Image.asset("assets/Google.png"),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       },
+                  //     );
+                  //   },
+                  // ),
+                  // const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      // Handle guest login action
+                      // Adjust to navigate as needed
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return LoginWithoutAnAccount();
                         },
-                        loading: (_) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                        loginSuccess: (_) {
-                          return GestureDetector(
-                            onTap: signInWithGoogle,
-                            child: Center(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: const Color.fromARGB(
-                                        255, 201, 201, 201),
-                                  ),
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset("assets/Google.png"),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        loginFailure: (_) {
-                          return GestureDetector(
-                            onTap: signInWithGoogle,
-                            child: Center(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: const Color.fromARGB(
-                                        255, 201, 201, 201),
-                                  ),
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset("assets/Google.png"),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        noInternet: (_) {
-                          return GestureDetector(
-                            onTap: signInWithGoogle,
-                            child: Center(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: const Color.fromARGB(
-                                        255, 201, 201, 201),
-                                  ),
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset("assets/Google.png"),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                      ));
                     },
+                    child: Text(
+                      "Login as Guest",
+                      style: TextStyles
+                          .ubuntu12blue23w300, // Adjust style as needed
+                    ),
                   ),
-                  const SizedBox(height: 20),
                   Row(
                     children: [
                       RichText(
@@ -525,7 +543,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
 
 //  SHA1: 0D:0E:CD:12:74:95:1C:4E:2B:CA:14:55:4F:DE:0C:E7:C3:38:7A:77
 // SHA256: E5:C5:06:8E:9B:AC:A6:01:3D:FA:E3:DB:99:54:A0:A9:A1:10:58:E7:ED:BC:D9:82:0B:FA:3F:E7:4F:01:C3:6B

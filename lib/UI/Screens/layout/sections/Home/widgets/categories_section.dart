@@ -261,8 +261,8 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => CategoriesListResultscreen(
-                                category:
-                                    '${openCruiseTypes?[index].type}',location: '',
+                                category: '${openCruiseTypes?[index].type}',
+                                location: '',
                               ),
                             ),
                           );

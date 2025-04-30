@@ -45,10 +45,8 @@ class BoatsScreen extends StatelessWidget {
                 Center(
                   child: Text(
                     "It looks like no bookings yet.",
-                    textAlign:
-                        TextAlign.center, 
-                    style: TextStyles
-                        .ubuntu14black55w400, 
+                    textAlign: TextAlign.center,
+                    style: TextStyles.ubuntu14black55w400,
                   ),
                 ),
               ],

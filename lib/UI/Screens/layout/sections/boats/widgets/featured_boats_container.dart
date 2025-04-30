@@ -238,9 +238,7 @@ class _FeaturedBoatsSectionState extends State<FeaturedBoatsSection> {
           };
         }
 
-        return 
-        
-        BlocListener<AddItemToFavouritesBloc, AddItemToFavouritesState>(
+        return BlocListener<AddItemToFavouritesBloc, AddItemToFavouritesState>(
           listener: (context, state) {
             state.map(
               initial: (value) {},

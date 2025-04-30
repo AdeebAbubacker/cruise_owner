@@ -1,3 +1,4 @@
+import 'package:cruise_buddy/UI/Screens/Auth/login_screens.dart';
 import 'package:cruise_buddy/UI/Widgets/Button/full_width_bluebutton.dart';
 import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/routes/app_routes.dart';
@@ -63,6 +64,15 @@ class _SignupScreenState extends State<SignupScreen> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            forceMaterialTransparency: true,
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.arrow_back_ios_new)),
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: SingleChildScrollView(
@@ -267,56 +277,59 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text("or sign up with"),
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 201, 201, 201)),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset("assets/Google.png"),
-                        )),
-                  ),
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       child: Container(
+                  //         height: 1,
+                  //         color: Colors.grey,
+                  //       ),
+                  //     ),
+                  //     const Padding(
+                  //       padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  //       child: Text("or sign up with"),
+                  //     ),
+                  //     Expanded(
+                  //       child: Container(
+                  //         height: 1,
+                  //         color: Colors.grey,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 20),
+                  // Center(
+                  //   child: Container(
+                  //       decoration: BoxDecoration(
+                  //         border: Border.all(
+                  //             color: const Color.fromARGB(255, 201, 201, 201)),
+                  //         borderRadius: BorderRadius.circular(30),
+                  //       ),
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.all(8.0),
+                  //         child: Image.asset("assets/Google.png"),
+                  //       )),
+                  // ),
                   const SizedBox(height: 12),
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Join Already have an account? ",
-                            style: TextStyles.ubuntu16black23w400,
-                          ),
-                          TextSpan(
-                            text: "Sign in.",
-                            style: TextStyles.ubuntu16blue86w600,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // Center(
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Text(
+                  //         "Join Already have an account? ",
+                  //         style: TextStyles.ubuntu14black00w500,
+                  //       ),
+                  //       TextButton(
+                  //         onPressed: () {
+                  //         },
+                  //         child: Text(
+                  //           "Sign in.",
+                  //           style: TextStyles.ubuntu12blue23w700,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 50,
                   )
@@ -329,3 +342,4 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
+//---------
