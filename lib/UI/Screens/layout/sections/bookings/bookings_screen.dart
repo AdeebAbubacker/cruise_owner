@@ -1,3 +1,5 @@
+import 'package:cruise_buddy/UI/Screens/layout/sections/Home/widgets/booking_type_dropdwon.dart';
+import 'package:cruise_buddy/UI/Screens/layout/sections/Home/widgets/pacakge_dropddown.dart';
 import 'package:cruise_buddy/UI/Widgets/toast/custom_toast.dart';
 import 'package:cruise_buddy/core/db/hive_db/adapters/package_details_adapter/package_details_adapter.dart';
 import 'package:cruise_buddy/core/db/hive_db/boxes/package_details_box.dart';
@@ -41,25 +43,28 @@ class _BookingsScreenState extends State<BookingsScreen> {
       listener: (context, state) {
         state.mapOrNull(
           getCruiseTypes: (value) {
-           
-               CustomToast.showFlushBar(
-                    context: context,
-                    status: true,
-                    title: "COngrats",
-                    content:
-                       "Your booking has been locked",
-                  );
+            CustomToast.showFlushBar(
+              context: context,
+              status: true,
+              title: "COngrats",
+              content: "Your booking has been locked",
+            );
           },
           getCruiseTypesFailure: (value) {
-           
-
-             CustomToast.showFlushBar(
-                    context: context,
-                    status: false,
-                    title: "Oops",
-                    content:
-                       "Something went wrong",
-                  );
+            CustomToast.showFlushBar(
+              context: context,
+              status: false,
+              title: "Oops",
+              content: "Something went wrong",
+            );
+          },
+          ownerBookingValiationFailure: (value) {
+            CustomToast.showFlushBar(
+              context: context,
+              status: false,
+              title: "Sorry",
+              content: "${value.loginValidation.message}",
+            );
           },
         );
       },
@@ -96,12 +101,14 @@ class _BookingsScreenState extends State<BookingsScreen> {
 
           // Now you can use this properly in ValueListenableBuilder
           void showBookingDialog(BuildContext context) {
-            PackageDetailsDB? selectedPackage;
+            // PackageDetailsDB? selectedPackage;
             DateTime? selectedStart;
             DateTime? selectedEnd;
+            //   String? selectedBookingTypeId;
             Box<PackageDetailsDB> packageDetailsBox =
                 Hive.box<PackageDetailsDB>('packageDetailsBox');
-
+            PackageBookingSelection? selectedPackage;
+            String selectedBookingTypeId = '';
             showDialog(
               context: context,
               builder: (context) {
@@ -113,111 +120,96 @@ class _BookingsScreenState extends State<BookingsScreen> {
                         child: Column(
                           children: [
                             // Dropdown for packages
+
+                            // ValueListenableBuilder<Box<PackageDetailsDB>>(
+                            //   valueListenable: packageDetailsBox.listenable(),
+                            //   builder: (context, box, _) {
+                            //     final packages = box.values.toList();
+
+                            //     return DropdownButton<PackageDetailsDB>(
+                            //       isExpanded: true,
+                            //       value: selectedPackage,
+                            //       hint: const Text("Select a Package"),
+                            //       items: packages.map((pkg) {
+                            //         return DropdownMenuItem<PackageDetailsDB>(
+                            //           value: pkg,
+                            //           child: PackageDropdownItem(package: pkg),
+                            //         );
+                            //       }).toList(),
+                            //       onChanged: (val) {
+                            //         setState(() => selectedPackage = val);
+                            //       },
+                            //       dropdownColor: Colors.white,
+                            //       itemHeight: 70.0,
+                            //     );
+                            //   },
+                            // ),
                             ValueListenableBuilder<Box<PackageDetailsDB>>(
                               valueListenable: packageDetailsBox.listenable(),
-                              builder: (context, Box<PackageDetailsDB> box, _) {
+                              builder: (context, box, _) {
                                 final packages = box.values.toList();
+                                final packageItems = <DropdownMenuItem<
+                                    PackageBookingSelection>>[];
 
-                                return SizedBox(
-                                  height: 100,
-                                  child: DropdownButton<PackageDetailsDB>(
-                                    isExpanded: true,
-                                    isDense: true,
-                                    value: selectedPackage,
-                                    hint: const Text("Select a Package"),
-                                    items: packages.map((pkg) {
-                                      return DropdownMenuItem<PackageDetailsDB>(
-                                        value: pkg,
-                                        child: Row(
-                                          children: [
-                                            // Image
-                                            if (pkg.cruiseImage != null)
-                                              SizedBox(
-                                                  width: 40,
-                                                  height: 40,
-                                                  child: Stack(
-                                                    alignment: Alignment
-                                                        .center, // Aligns both text and image in the center
-                                                    children: [
-                                                      // Image (Bottom Layer)
-                                                      if (pkg.cruiseImage !=
-                                                          null)
-                                                        Image.network(
-                                                          pkg.cruiseImage!,
-                                                          width: 40,
-                                                          height: 40,
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                      else
-                                                        const Icon(
-                                                            Icons
-                                                                .image_not_supported,
-                                                            size: 40),
+                                for (var pkg in packages) {
+                                  for (var bookingType
+                                      in pkg.bookingTypeIds ?? []) {
+                                    final selection = PackageBookingSelection(
+                                        pkg, bookingType.toString());
+                                    packageItems.add(DropdownMenuItem<
+                                        PackageBookingSelection>(
+                                      value: selection,
+                                      child: PackageDropdownItem(
+                                        package: pkg,
+                                        bookingTypeId: bookingType.toString(),
+                                      ),
+                                    ));
+                                  }
+                                }
 
-                                                      // Package Name (Top Layer)
-                                                      Positioned(
-                                                        top:
-                                                            0, // Position it at the top of the image
-                                                        child: Text(
-                                                          pkg.packageName ??
-                                                              'No package name',
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .grey,
-                                                                  fontSize: 12),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          maxLines:
-                                                              2, // Limits to 2 lines
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ))
-                                            else
-                                              const Icon(
-                                                  Icons.image_not_supported,
-                                                  size: 40),
-
-                                            const SizedBox(width: 10),
-
-                                            // Cruise Name and Package Name
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    pkg.cruiseName ??
-                                                        'Unknown Cruise',
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    overflow: TextOverflow
-                                                        .ellipsis, // Adds ellipsis when text overflows
-                                                    maxLines:
-                                                        2, // Limits the text to 2 lines
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (val) {
-                                      setState(() => selectedPackage = val);
-                                    },
-                                    dropdownColor: Colors.white,
-                                    itemHeight: 100.0,
-                                  ),
+                                return DropdownButton<PackageBookingSelection>(
+                                  isExpanded: true,
+                                  value: selectedPackage,
+                                  hint: const Text("Select a Package"),
+                                  items: packageItems,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      selectedPackage = val;
+                                      selectedBookingTypeId =
+                                          val?.bookingTypeId ?? '';
+                                    });
+                                  },
+                                  dropdownColor: Colors.white,
+                                  itemHeight: 70.0,
                                 );
                               },
                             ),
-
+                            //   ],
+                            // ),
                             const SizedBox(height: 10),
+                            // ValueListenableBuilder<Box<PackageDetailsDB>>(
+                            //   valueListenable: packageDetailsBox.listenable(),
+                            //   builder: (context, box, _) {
+                            //     final packages = box.values.toList();
+
+                            //     return DropdownButton<PackageDetailsDB>(
+                            //       isExpanded: true,
+                            //       value: selectedPackage,
+                            //       hint: const Text("Select a Booking"),
+                            //       items: packages.map((pkg) {
+                            //         return DropdownMenuItem<PackageDetailsDB>(
+                            //           value: pkg,
+                            //           child: BookingTypeDropdown(package: pkg),
+                            //         );
+                            //       }).toList(),
+                            //       onChanged: (val) {
+                            //         setState(() => selectedPackage = val);
+                            //       },
+                            //       dropdownColor: Colors.white,
+                            //       itemHeight: 70.0,
+                            //     );
+                            //   },
+                            // ),
 
                             // Start Date
                             ElevatedButton(
@@ -269,8 +261,10 @@ class _BookingsScreenState extends State<BookingsScreen> {
                             if (selectedStart == null ||
                                 selectedPackage == null) return;
                             // Extracting packageId, startDate, and endDate.
-                            String packageId = selectedPackage!.packageId ??
-                                ''; // Assuming packageId is a field of PackageDetailsDB.
+                            String packageId = selectedPackage
+                                    ?.package.bookingTypeIds?.first
+                                    .toString() ??
+                                '1'; // Assuming packageId is a field of PackageDetailsDB.
                             String startDate =
                                 DateFormat('yyyy-MM-dd').format(selectedStart!);
                             String? endDate = selectedEnd != null
@@ -282,7 +276,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                               CreateBookingByOwnerEvent.getCruiseTypes(
                                 packageId: packageId,
                                 bookingTypeId:
-                                    '1', // Assuming bookingTypeId is '1' (this can be dynamic as well).
+                                    selectedBookingTypeId, // Assuming bookingTypeId is '1' (this can be dynamic as well).
                                 startDate: startDate,
                                 endDate: endDate,
                               ),
@@ -294,6 +288,9 @@ class _BookingsScreenState extends State<BookingsScreen> {
                             builder: (context, state) {
                               return state.map(
                                 initial: (value) {
+                                  return const Text("Confirm");
+                                },
+                                ownerBookingValiationFailure: (value) {
                                   return const Text("Confirm");
                                 },
                                 loading: (value) {

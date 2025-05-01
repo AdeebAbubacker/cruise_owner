@@ -1,6 +1,6 @@
 import 'package:cruise_buddy/UI/Screens/boat_detail/boat_detail_screen.dart';
 import 'package:cruise_buddy/UI/Screens/layout/sections/boats/widgets/featured_boats_container.dart';
-import 'package:cruise_buddy/UI/Screens/layout/sections/favourites/bookings_screen.dart';
+import 'package:cruise_buddy/UI/Screens/layout/sections/bookings/bookings_screen.dart';
 import 'package:cruise_buddy/UI/Widgets/toast/custom_toast.dart';
 import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/db/shared/shared_prefernce.dart';

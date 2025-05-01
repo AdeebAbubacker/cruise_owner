@@ -33,7 +33,7 @@ Future<Either<String, List<ListMyCruiseModel>>> getOwnerspackages() async {
     _headers['Authorization'] = 'Bearer $token';
 
     final response = await http.get(
-      Uri.parse('$url/owner/my/package-list?include=owner.cruises.packages,owner.cruises.cruisesImages'),
+      Uri.parse('$url/owner/my/package-list?include=owner.cruises.packages,owner.cruises.cruisesImages,owner.cruises.packages.bookingTypes'),
       headers: _headers,
     );
 

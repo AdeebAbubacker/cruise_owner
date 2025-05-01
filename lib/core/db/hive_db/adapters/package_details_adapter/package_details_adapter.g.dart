@@ -18,7 +18,7 @@ class PackageDetailsDBAdapter extends TypeAdapter<PackageDetailsDB> {
     };
     return PackageDetailsDB(
       packageId: fields[0] as String?,
-      bookingTypeId: fields[1] as String?,
+      bookingTypeIds: (fields[1] as List?)?.cast<String>(),
       startDate: fields[2] as DateTime?,
       endDate: fields[3] as DateTime?,
       totalAmount: fields[4] as double?,
@@ -35,7 +35,7 @@ class PackageDetailsDBAdapter extends TypeAdapter<PackageDetailsDB> {
       ..writeByte(0)
       ..write(obj.packageId)
       ..writeByte(1)
-      ..write(obj.bookingTypeId)
+      ..write(obj.bookingTypeIds)
       ..writeByte(2)
       ..write(obj.startDate)
       ..writeByte(3)

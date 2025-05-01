@@ -28,7 +28,22 @@ class TestPackage extends StatelessWidget {
                 leading: (item.cruiseImage ?? '').isNotEmpty
                     ? Image.network(item.cruiseImage!)
                     : const Icon(Icons.image_not_supported),
-                title: Text('Package ID: ${item.packageId ?? "N/A"} ${item.cruiseName ?? "N/A"} ${item.packageName ?? "N/A"}'),
+                title: Text('Package ID: ${item.packageId ?? "N/A"} - ${item.cruiseName ?? "N/A"}'),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (item.bookingTypeIds != null && item.bookingTypeIds!.isNotEmpty)
+                      Text('Booking Type IDs: ${item.bookingTypeIds!.join(', ')}'),
+                    if (item.packageName != null)
+                      Text('Package Name: ${item.packageName ?? "N/A"}'),
+                    if (item.startDate != null)
+                      Text('Start Date: ${item.startDate?.toLocal().toString()}'),
+                    if (item.endDate != null)
+                      Text('End Date: ${item.endDate?.toLocal().toString()}'),
+                    if (item.totalAmount != null)
+                      Text('Total Amount: \$${item.totalAmount}'),
+                  ],
+                ),
               );
             },
           );

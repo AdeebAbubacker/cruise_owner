@@ -3,11 +3,15 @@ import 'package:cruise_buddy/UI/Screens/layout/sections/Home/widgets/categories_
 import 'package:cruise_buddy/UI/Screens/layout/sections/Home/widgets/explore_destination.dart';
 import 'package:cruise_buddy/UI/Screens/layout/sections/Home/widgets/location_search_delgate.dart';
 import 'package:cruise_buddy/UI/Screens/layout/sections/boats/widgets/featured_boats_container.dart';
+import 'package:cruise_buddy/UI/Widgets/OrderDetailsPopup/order_details_popup.dart';
+import 'package:cruise_buddy/UI/Widgets/shimmer/transaction_tile_shimmer.dart';
+import 'package:cruise_buddy/UI/Widgets/toast/custom_toast.dart';
 import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/db/hive_db/adapters/package_details_adapter/package_details_adapter.dart';
 import 'package:cruise_buddy/core/db/hive_db/adapters/user_details_adapter/user_details_adapter.dart';
 import 'package:cruise_buddy/core/db/hive_db/boxes/package_details_box.dart';
 import 'package:cruise_buddy/core/db/hive_db/boxes/user_details_box.dart';
+import 'package:cruise_buddy/core/model/get_my_booking_list/get_my_booking_list.dart';
 import 'package:cruise_buddy/core/model/list_my_cruise_model/package.dart';
 import 'package:cruise_buddy/core/view_model/getUserProfile/get_user_profile_bloc.dart';
 import 'package:cruise_buddy/core/view_model/listOwnerpackages/listowner_packages_bloc.dart';
@@ -18,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,8 +54,34 @@ class _HomeScreenState extends State<HomeScreen> {
           .add(UpcomgBookingscountEvent.getUpcomingcount());
       BlocProvider.of<ListownerPackagesBloc>(context)
           .add(ListownerPackagesEvent.listPackages());
+      checkForUpdate();
     });
     super.initState();
+  }
+
+  Future<void> checkForUpdate() async {
+    try {
+      final updateInfo = await InAppUpdate.checkForUpdate();
+
+      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        InAppUpdate.performImmediateUpdate().catchError((e) {});
+      }
+    } catch (e) {}
+  }
+
+  String splitIntoTwoLines(String text) {
+    List<String> words = text.split(' ');
+    if (words.length == 1) {
+      // Split a single word in half
+      int middle = (words[0].length / 2).ceil();
+      return words[0].substring(0, middle) + '\n' + words[0].substring(middle);
+    } else {
+      // Distribute words to balance line length
+      int half = (words.length / 2).ceil();
+      String line1 = words.sublist(0, half).join(' ');
+      String line2 = words.sublist(half).join(' ');
+      return line1 + '\n' + line2;
+    }
   }
 
   @override
@@ -64,26 +95,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return BlocListener<ListownerPackagesBloc, ListownerPackagesState>(
       listener: (context, state) {
-        print("objecggt");
         state.mapOrNull(
           listpackages: (value) async {
-            print("object");
-             await packageDetailsBox.clear();
+            await packageDetailsBox.clear();
 
-            final List<Cruise> cruises = value.listCruise?.firstOrNull?.owner?.cruises ?? [];
+            final List<Cruise> cruises =
+                value.listCruise?.firstOrNull?.owner?.cruises ?? [];
 
             for (Cruise cruise in cruises) {
               final image = (cruise.cruisesImages ?? []).isNotEmpty
                   ? cruise.cruisesImages!.first.cruiseImg
                   : null;
               final cruiseName = cruise.name;
+
               for (Package package in cruise.packages ?? []) {
+                final List<String> bookingTypeIds = (package.bookingTypes ?? [])
+                    .map((bt) => bt.id.toString())
+                    .toList();
+
                 final packageDetails = PackageDetailsDB(
                   packageId: package.id.toString(),
-                  cruiseImage: image, 
+                  bookingTypeIds: bookingTypeIds,
+                  cruiseImage: image,
                   cruiseName: cruiseName,
-                  packageName: package.name.toString(),
-                  // optionally: cruiseId, packageName, etc.
+                  packageName: package.id.toString(),
                 );
 
                 await packageDetailsBox.add(packageDetails);
@@ -153,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
                                   Text(
-                                    "Book your perfect boat adventure in just a few taps!",
+                                    "Effortlessly manage your boat bookings, track orders.",
                                     style: TextStyles.ubuntu14black55w400,
                                   ),
                                 ],
@@ -194,15 +229,29 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: containerWidth,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: Color(0XFF2DCCD1),
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color(0xFF2DCCD1),
+                                Color(0xFF1F8386),
+                              ],
+                            ),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           padding: const EdgeInsets.all(12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Todays Bookings",
-                                  style: TextStyle(color: Colors.white)),
+                              Text(
+                                splitIntoTwoLines("Todays Bookings"),
+                                style: GoogleFonts.ubuntu(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 2,
+                              ),
                               SizedBox(height: 8),
                               BlocBuilder<TodaysBookingCountBloc,
                                   TodaysBookingCountState>(
@@ -210,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return state.map(
                                     initial: (value) {
                                       return Text(
-                                        "21",
+                                        "0",
                                         style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,
@@ -241,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     todaysCount: (value) {
                                       return Text(
                                         "${value.todaysCount ?? 0}",
-                                        style: TextStyle(
+                                        style: GoogleFonts.ubuntu(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
@@ -271,7 +320,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: containerWidth,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: Color(0XFF2DCCD1),
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color(0xFF434343),
+                                Color(0xFF131515),
+                              ],
+                            ),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           padding: const EdgeInsets.all(12),
@@ -279,7 +335,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Upcoming Bookings",
-                                  style: TextStyle(color: Colors.white)),
+                                  style: GoogleFonts.ubuntu(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  )),
                               SizedBox(height: 8),
                               BlocBuilder<UpcomgBookingscountBloc,
                                   UpcomgBookingscountState>(
@@ -308,7 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     upcmingCount: (value) {
                                       return Text(
                                         "${value.upcomingCount}",
-                                        style: TextStyle(
+                                        style: GoogleFonts.ubuntu(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
@@ -441,30 +501,40 @@ class BookingHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 30, right: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 30, right: 10),
+          child: Text(
             "Booking History",
             style:
                 GoogleFonts.ubuntu(fontSize: 20, fontWeight: FontWeight.w700),
           ),
-          SizedBox(height: 10),
-          BlocBuilder<SeeMyBookingListBloc, SeeMyBookingListState>(
+        ),
+        SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 9,
+          ),
+          child: BlocBuilder<SeeMyBookingListBloc, SeeMyBookingListState>(
             builder: (context, state) {
               return state.map(
                 initial: (value) {
-                  return Column(
-                    children: [
-                      SizedBox(height: 40),
-                      Center(child: CircularProgressIndicator()),
-                    ],
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 5,
+                    itemBuilder: (_, __) => const TransactionTileShimmer(),
                   );
                 },
                 loading: (value) {
-                  return CircularProgressIndicator();
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 5,
+                    itemBuilder: (_, __) => const TransactionTileShimmer(),
+                  );
                 },
                 getuseruccess: (value) {
                   return ListView.builder(
@@ -474,13 +544,36 @@ class BookingHistoryScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       print(
                           "name '${value.userprofilemodel.data?[index].user?.name}");
-                      return TransactionTile(
-                        name:
-                            '${value.userprofilemodel.data?[index].user?.name}',
-                        transactionId:
-                            '${value.userprofilemodel.data?[index].invoiceId}',
-                        time:
-                            '${value.userprofilemodel.data?[index].startDate}',
+                      final transaction = value.userprofilemodel.data?[index];
+                      final user = transaction?.user;
+                      final GlobalKey qrKey = GlobalKey();
+                      return GestureDetector(
+                        onTap: () {
+                          if (user != null) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => BookingDetailsPopup(
+                                booking: value.userprofilemodel.data?[index] ??
+                                    BookingData(),
+                                qrKey: qrKey,
+                              ),
+                            );
+                          } else {
+                            CustomToast.showFlushBar(
+                                context: context,
+                                status: false,
+                                title: "",
+                                content: "content");
+                          }
+                        },
+                        child: TransactionTile(
+                          name:
+                              '${value.userprofilemodel.data?[index].user?.name}',
+                          transactionId:
+                              '${value.userprofilemodel.data?[index].invoiceId}',
+                          time:
+                              '${value.userprofilemodel.data?[index].startDate}',
+                        ),
                       );
                     },
                   );
@@ -499,8 +592,8 @@ class BookingHistoryScreen extends StatelessWidget {
               );
             },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -16,6 +16,9 @@ class ApiTest extends StatelessWidget {
             BlocBuilder<CreateBookingByOwnerBloc, CreateBookingByOwnerState>(
               builder: (context, state) {
                 return state.map(
+                  ownerBookingValiationFailure: (value) {
+                    return const Text("Confirm");
+                  },
                   initial: (value) {
                     return Text("0");
                   },

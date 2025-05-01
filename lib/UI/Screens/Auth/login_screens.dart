@@ -193,22 +193,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   AppRoutes.navigateToMainLayoutScreen(context);
                 },
                 loginFailure: (failure) {
-                
-                   CustomToast.showFlushBar(
+                  CustomToast.showFlushBar(
                     context: context,
                     status: false,
                     title: "Error",
-                    content:
-                       "Something went wrong",
+                    content: "Something went wrong",
                   );
                 },
                 noInternet: (value) {
-                 CustomToast.showFlushBar(
+                  CustomToast.showFlushBar(
                     context: context,
                     status: false,
                     title: "Error",
-                    content:
-                       "No Internet please try again",
+                    content: "No Internet please try again",
                   );
                 },
               );
@@ -227,22 +224,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   AppRoutes.navigateToMainLayoutScreen(context);
                 },
                 addedFailure: (failure) {
-                 
-                   CustomToast.showFlushBar(
+                  CustomToast.showFlushBar(
                     context: context,
                     status: false,
                     title: "Error",
-                    content:
-                        "Something went wrong",
+                    content: "Something went wrong",
                   );
                 },
                 noInternet: (value) {
-                 CustomToast.showFlushBar(
+                  CustomToast.showFlushBar(
                     context: context,
                     status: false,
                     title: "Error",
-                    content:
-                       "No Internet please try again",
+                    content: "No Internet please try again",
                   );
                 },
               );
@@ -258,10 +252,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const SizedBox(height: 70),
                   Center(
-                    child: Image.asset(
-                      'assets/email_logo.png',
-                      width: 120,
-                      height: 120,
+                    child: Container(
+                      width: 80, // Equal width and height
+                      height: 80,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 201, 201, 201),
+                        ),
+                        borderRadius: BorderRadius.circular(1000),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'assets/icons/emailLogo.svg',
+                            width: 50,
+                            height: 50,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),

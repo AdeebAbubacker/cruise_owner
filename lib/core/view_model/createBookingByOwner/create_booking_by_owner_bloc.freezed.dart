@@ -396,6 +396,8 @@ mixin _$CreateBookingByOwnerState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String cruisetypemodel) getCruiseTypes,
+    required TResult Function(AddBookingValidation loginValidation)
+        ownerBookingValiationFailure,
     required TResult Function(String error) getCruiseTypesFailure,
     required TResult Function() noInternet,
   }) =>
@@ -405,6 +407,8 @@ mixin _$CreateBookingByOwnerState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String cruisetypemodel)? getCruiseTypes,
+    TResult? Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult? Function(String error)? getCruiseTypesFailure,
     TResult? Function()? noInternet,
   }) =>
@@ -414,6 +418,8 @@ mixin _$CreateBookingByOwnerState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String cruisetypemodel)? getCruiseTypes,
+    TResult Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult Function(String error)? getCruiseTypesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -424,6 +430,8 @@ mixin _$CreateBookingByOwnerState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_CreateOwnerBooking value) getCruiseTypes,
+    required TResult Function(_OwnerBookingValiationFailure value)
+        ownerBookingValiationFailure,
     required TResult Function(_CreateOwnerFailure value) getCruiseTypesFailure,
     required TResult Function(_NoInternet value) noInternet,
   }) =>
@@ -433,6 +441,8 @@ mixin _$CreateBookingByOwnerState {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult? Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult? Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult? Function(_NoInternet value)? noInternet,
   }) =>
@@ -442,6 +452,8 @@ mixin _$CreateBookingByOwnerState {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult Function(_NoInternet value)? noInternet,
     required TResult orElse(),
@@ -515,6 +527,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String cruisetypemodel) getCruiseTypes,
+    required TResult Function(AddBookingValidation loginValidation)
+        ownerBookingValiationFailure,
     required TResult Function(String error) getCruiseTypesFailure,
     required TResult Function() noInternet,
   }) {
@@ -527,6 +541,8 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String cruisetypemodel)? getCruiseTypes,
+    TResult? Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult? Function(String error)? getCruiseTypesFailure,
     TResult? Function()? noInternet,
   }) {
@@ -539,6 +555,8 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String cruisetypemodel)? getCruiseTypes,
+    TResult Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult Function(String error)? getCruiseTypesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -555,6 +573,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_CreateOwnerBooking value) getCruiseTypes,
+    required TResult Function(_OwnerBookingValiationFailure value)
+        ownerBookingValiationFailure,
     required TResult Function(_CreateOwnerFailure value) getCruiseTypesFailure,
     required TResult Function(_NoInternet value) noInternet,
   }) {
@@ -567,6 +587,8 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult? Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult? Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult? Function(_NoInternet value)? noInternet,
   }) {
@@ -579,6 +601,8 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult Function(_NoInternet value)? noInternet,
     required TResult orElse(),
@@ -638,6 +662,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String cruisetypemodel) getCruiseTypes,
+    required TResult Function(AddBookingValidation loginValidation)
+        ownerBookingValiationFailure,
     required TResult Function(String error) getCruiseTypesFailure,
     required TResult Function() noInternet,
   }) {
@@ -650,6 +676,8 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String cruisetypemodel)? getCruiseTypes,
+    TResult? Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult? Function(String error)? getCruiseTypesFailure,
     TResult? Function()? noInternet,
   }) {
@@ -662,6 +690,8 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String cruisetypemodel)? getCruiseTypes,
+    TResult Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult Function(String error)? getCruiseTypesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -678,6 +708,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_CreateOwnerBooking value) getCruiseTypes,
+    required TResult Function(_OwnerBookingValiationFailure value)
+        ownerBookingValiationFailure,
     required TResult Function(_CreateOwnerFailure value) getCruiseTypesFailure,
     required TResult Function(_NoInternet value) noInternet,
   }) {
@@ -690,6 +722,8 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult? Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult? Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult? Function(_NoInternet value)? noInternet,
   }) {
@@ -702,6 +736,8 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult Function(_NoInternet value)? noInternet,
     required TResult orElse(),
@@ -791,6 +827,8 @@ class _$CreateOwnerBookingImpl implements _CreateOwnerBooking {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String cruisetypemodel) getCruiseTypes,
+    required TResult Function(AddBookingValidation loginValidation)
+        ownerBookingValiationFailure,
     required TResult Function(String error) getCruiseTypesFailure,
     required TResult Function() noInternet,
   }) {
@@ -803,6 +841,8 @@ class _$CreateOwnerBookingImpl implements _CreateOwnerBooking {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String cruisetypemodel)? getCruiseTypes,
+    TResult? Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult? Function(String error)? getCruiseTypesFailure,
     TResult? Function()? noInternet,
   }) {
@@ -815,6 +855,8 @@ class _$CreateOwnerBookingImpl implements _CreateOwnerBooking {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String cruisetypemodel)? getCruiseTypes,
+    TResult Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult Function(String error)? getCruiseTypesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -831,6 +873,8 @@ class _$CreateOwnerBookingImpl implements _CreateOwnerBooking {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_CreateOwnerBooking value) getCruiseTypes,
+    required TResult Function(_OwnerBookingValiationFailure value)
+        ownerBookingValiationFailure,
     required TResult Function(_CreateOwnerFailure value) getCruiseTypesFailure,
     required TResult Function(_NoInternet value) noInternet,
   }) {
@@ -843,6 +887,8 @@ class _$CreateOwnerBookingImpl implements _CreateOwnerBooking {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult? Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult? Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult? Function(_NoInternet value)? noInternet,
   }) {
@@ -855,6 +901,8 @@ class _$CreateOwnerBookingImpl implements _CreateOwnerBooking {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult Function(_NoInternet value)? noInternet,
     required TResult orElse(),
@@ -877,6 +925,187 @@ abstract class _CreateOwnerBooking implements CreateBookingByOwnerState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CreateOwnerBookingImplCopyWith<_$CreateOwnerBookingImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$OwnerBookingValiationFailureImplCopyWith<$Res> {
+  factory _$$OwnerBookingValiationFailureImplCopyWith(
+          _$OwnerBookingValiationFailureImpl value,
+          $Res Function(_$OwnerBookingValiationFailureImpl) then) =
+      __$$OwnerBookingValiationFailureImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({AddBookingValidation loginValidation});
+}
+
+/// @nodoc
+class __$$OwnerBookingValiationFailureImplCopyWithImpl<$Res>
+    extends _$CreateBookingByOwnerStateCopyWithImpl<$Res,
+        _$OwnerBookingValiationFailureImpl>
+    implements _$$OwnerBookingValiationFailureImplCopyWith<$Res> {
+  __$$OwnerBookingValiationFailureImplCopyWithImpl(
+      _$OwnerBookingValiationFailureImpl _value,
+      $Res Function(_$OwnerBookingValiationFailureImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CreateBookingByOwnerState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? loginValidation = null,
+  }) {
+    return _then(_$OwnerBookingValiationFailureImpl(
+      loginValidation: null == loginValidation
+          ? _value.loginValidation
+          : loginValidation // ignore: cast_nullable_to_non_nullable
+              as AddBookingValidation,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$OwnerBookingValiationFailureImpl
+    implements _OwnerBookingValiationFailure {
+  const _$OwnerBookingValiationFailureImpl({required this.loginValidation});
+
+  @override
+  final AddBookingValidation loginValidation;
+
+  @override
+  String toString() {
+    return 'CreateBookingByOwnerState.ownerBookingValiationFailure(loginValidation: $loginValidation)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OwnerBookingValiationFailureImpl &&
+            (identical(other.loginValidation, loginValidation) ||
+                other.loginValidation == loginValidation));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, loginValidation);
+
+  /// Create a copy of CreateBookingByOwnerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OwnerBookingValiationFailureImplCopyWith<
+          _$OwnerBookingValiationFailureImpl>
+      get copyWith => __$$OwnerBookingValiationFailureImplCopyWithImpl<
+          _$OwnerBookingValiationFailureImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(String cruisetypemodel) getCruiseTypes,
+    required TResult Function(AddBookingValidation loginValidation)
+        ownerBookingValiationFailure,
+    required TResult Function(String error) getCruiseTypesFailure,
+    required TResult Function() noInternet,
+  }) {
+    return ownerBookingValiationFailure(loginValidation);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(String cruisetypemodel)? getCruiseTypes,
+    TResult? Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
+    TResult? Function(String error)? getCruiseTypesFailure,
+    TResult? Function()? noInternet,
+  }) {
+    return ownerBookingValiationFailure?.call(loginValidation);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(String cruisetypemodel)? getCruiseTypes,
+    TResult Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
+    TResult Function(String error)? getCruiseTypesFailure,
+    TResult Function()? noInternet,
+    required TResult orElse(),
+  }) {
+    if (ownerBookingValiationFailure != null) {
+      return ownerBookingValiationFailure(loginValidation);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_CreateOwnerBooking value) getCruiseTypes,
+    required TResult Function(_OwnerBookingValiationFailure value)
+        ownerBookingValiationFailure,
+    required TResult Function(_CreateOwnerFailure value) getCruiseTypesFailure,
+    required TResult Function(_NoInternet value) noInternet,
+  }) {
+    return ownerBookingValiationFailure(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult? Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
+    TResult? Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
+    TResult? Function(_NoInternet value)? noInternet,
+  }) {
+    return ownerBookingValiationFailure?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
+    TResult Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
+    TResult Function(_NoInternet value)? noInternet,
+    required TResult orElse(),
+  }) {
+    if (ownerBookingValiationFailure != null) {
+      return ownerBookingValiationFailure(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _OwnerBookingValiationFailure
+    implements CreateBookingByOwnerState {
+  const factory _OwnerBookingValiationFailure(
+          {required final AddBookingValidation loginValidation}) =
+      _$OwnerBookingValiationFailureImpl;
+
+  AddBookingValidation get loginValidation;
+
+  /// Create a copy of CreateBookingByOwnerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$OwnerBookingValiationFailureImplCopyWith<
+          _$OwnerBookingValiationFailureImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -952,6 +1181,8 @@ class _$CreateOwnerFailureImpl implements _CreateOwnerFailure {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String cruisetypemodel) getCruiseTypes,
+    required TResult Function(AddBookingValidation loginValidation)
+        ownerBookingValiationFailure,
     required TResult Function(String error) getCruiseTypesFailure,
     required TResult Function() noInternet,
   }) {
@@ -964,6 +1195,8 @@ class _$CreateOwnerFailureImpl implements _CreateOwnerFailure {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String cruisetypemodel)? getCruiseTypes,
+    TResult? Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult? Function(String error)? getCruiseTypesFailure,
     TResult? Function()? noInternet,
   }) {
@@ -976,6 +1209,8 @@ class _$CreateOwnerFailureImpl implements _CreateOwnerFailure {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String cruisetypemodel)? getCruiseTypes,
+    TResult Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult Function(String error)? getCruiseTypesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -992,6 +1227,8 @@ class _$CreateOwnerFailureImpl implements _CreateOwnerFailure {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_CreateOwnerBooking value) getCruiseTypes,
+    required TResult Function(_OwnerBookingValiationFailure value)
+        ownerBookingValiationFailure,
     required TResult Function(_CreateOwnerFailure value) getCruiseTypesFailure,
     required TResult Function(_NoInternet value) noInternet,
   }) {
@@ -1004,6 +1241,8 @@ class _$CreateOwnerFailureImpl implements _CreateOwnerFailure {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult? Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult? Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult? Function(_NoInternet value)? noInternet,
   }) {
@@ -1016,6 +1255,8 @@ class _$CreateOwnerFailureImpl implements _CreateOwnerFailure {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult Function(_NoInternet value)? noInternet,
     required TResult orElse(),
@@ -1084,6 +1325,8 @@ class _$NoInternetImpl implements _NoInternet {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String cruisetypemodel) getCruiseTypes,
+    required TResult Function(AddBookingValidation loginValidation)
+        ownerBookingValiationFailure,
     required TResult Function(String error) getCruiseTypesFailure,
     required TResult Function() noInternet,
   }) {
@@ -1096,6 +1339,8 @@ class _$NoInternetImpl implements _NoInternet {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String cruisetypemodel)? getCruiseTypes,
+    TResult? Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult? Function(String error)? getCruiseTypesFailure,
     TResult? Function()? noInternet,
   }) {
@@ -1108,6 +1353,8 @@ class _$NoInternetImpl implements _NoInternet {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String cruisetypemodel)? getCruiseTypes,
+    TResult Function(AddBookingValidation loginValidation)?
+        ownerBookingValiationFailure,
     TResult Function(String error)? getCruiseTypesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -1124,6 +1371,8 @@ class _$NoInternetImpl implements _NoInternet {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_CreateOwnerBooking value) getCruiseTypes,
+    required TResult Function(_OwnerBookingValiationFailure value)
+        ownerBookingValiationFailure,
     required TResult Function(_CreateOwnerFailure value) getCruiseTypesFailure,
     required TResult Function(_NoInternet value) noInternet,
   }) {
@@ -1136,6 +1385,8 @@ class _$NoInternetImpl implements _NoInternet {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult? Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult? Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult? Function(_NoInternet value)? noInternet,
   }) {
@@ -1148,6 +1399,8 @@ class _$NoInternetImpl implements _NoInternet {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_CreateOwnerBooking value)? getCruiseTypes,
+    TResult Function(_OwnerBookingValiationFailure value)?
+        ownerBookingValiationFailure,
     TResult Function(_CreateOwnerFailure value)? getCruiseTypesFailure,
     TResult Function(_NoInternet value)? noInternet,
     required TResult orElse(),

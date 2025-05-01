@@ -1,7 +1,7 @@
 import 'package:cruise_buddy/UI/Screens/layout/sections/Home/home_screen.dart';
 import 'package:cruise_buddy/UI/Screens/layout/sections/account/account_screen.dart';
 import 'package:cruise_buddy/UI/Screens/layout/sections/boats/boats_screen.dart';
-import 'package:cruise_buddy/UI/Screens/layout/sections/favourites/bookings_screen.dart';
+import 'package:cruise_buddy/UI/Screens/layout/sections/bookings/bookings_screen.dart';
 import 'package:cruise_buddy/core/constants/colors/app_colors.dart';
 import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/view_model/getCruiseTypes/get_cruise_types_bloc.dart';

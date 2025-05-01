@@ -7,7 +7,7 @@ class PackageDetailsDB {
   String? packageId;
 
   @HiveField(1)
-  String? bookingTypeId;
+  List<String>? bookingTypeIds;
 
   @HiveField(2)
   DateTime? startDate;
@@ -26,7 +26,7 @@ class PackageDetailsDB {
 
   PackageDetailsDB({
     this.packageId,
-    this.bookingTypeId,
+    this.bookingTypeIds,
     this.startDate,
     this.endDate,
     this.totalAmount,
@@ -37,12 +37,11 @@ class PackageDetailsDB {
 
   factory PackageDetailsDB.fromJson(Map<String, dynamic> json) {
     return PackageDetailsDB(
-      packageId: json['packageId'] != null
-          ? json['packageId'].toString()
-          : null,
-      bookingTypeId: json['bookingTypeId'] != null
-          ? json['bookingTypeId'].toString()
-          : null,
+      packageId:
+          json['packageId'] != null ? json['packageId'].toString() : null,
+     bookingTypeIds: (json['bookingTypeIds'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
       startDate: json['startDate'] != null
           ? DateTime.tryParse(json['startDate'])
           : null,
@@ -60,7 +59,7 @@ class PackageDetailsDB {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['packageId'] = packageId;
-    data['bookingTypeId'] = bookingTypeId;
+    data['bookingTypeIds'] = bookingTypeIds;
     data['startDate'] = startDate;
     data['endDate'] = endDate;
     data['totalAmount'] = totalAmount;
