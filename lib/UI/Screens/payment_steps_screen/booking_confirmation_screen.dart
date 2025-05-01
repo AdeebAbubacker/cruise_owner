@@ -1,6 +1,7 @@
 import 'package:cruise_buddy/UI/Screens/payment_steps_screen/select_payment_method.dart';
 import 'package:cruise_buddy/UI/Widgets/Button/fullwidth_rectangle_bluebutton.dart';
 import 'package:cruise_buddy/UI/Widgets/Button/rectangle_bluebutton_loading.dart';
+import 'package:cruise_buddy/UI/Widgets/toast/custom_toast.dart';
 import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/view_model/bookMyCruise/book_my_cruise_bloc.dart';
 import 'package:flutter/material.dart';
@@ -140,16 +141,22 @@ class _BookingconfirmationScreenState extends State<BookingconfirmationScreen> {
           },
           getBookedFailure: (value) {
             setState(() => _isLoading = false);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text(
-                      "Booking failed, your cruise is not available in this date")),
+
+            CustomToast.showFlushBar(
+              context: context,
+              status: false,
+              title: "Sorry",
+              content:
+                  "Booking failed, your cruise is not available in this date",
             );
           },
           noInternet: (value) {
             setState(() => _isLoading = false);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("No internet connection")),
+            CustomToast.showFlushBar(
+              context: context,
+              status: false,
+              title: "Oops",
+              content: "No internet connection",
             );
           },
         );
@@ -385,7 +392,7 @@ class _BookingconfirmationScreenState extends State<BookingconfirmationScreen> {
                                 String formattedDate = DateFormat('yyyy-MM-dd')
                                     .format(_selectedDate);
 
-                                print('ddddddddddddd ${formattedDate}');
+                                print('ddddddddddddd $formattedDate');
                                 context.read<BookMyCruiseBloc>().add(
                                     BookMyCruiseEvent.createNewbookings(
                                         date: formattedDate));

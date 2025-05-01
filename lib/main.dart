@@ -1,6 +1,6 @@
 import 'package:cruise_buddy/UI/Login%20Without/login_withoutan_account.dart';
 import 'package:cruise_buddy/UI/Screens/Auth/login_screens.dart';
-import 'package:cruise_buddy/UI/Screens/Auth/signup_screen.dart';
+
 import 'package:cruise_buddy/UI/Screens/On%20Boarding/onboardingscreen_one.dart';
 import 'package:cruise_buddy/UI/Screens/On%20Boarding/onboardingscreen_three.dart';
 import 'package:cruise_buddy/UI/Screens/On%20Boarding/onboardingscreen_two.dart';
@@ -10,8 +10,13 @@ import 'package:cruise_buddy/UI/Screens/layout/main_layout/main_layout.dart';
 import 'package:cruise_buddy/UI/Screens/misc/booking_requests_screen.dart';
 import 'package:cruise_buddy/UI/Screens/misc/notifications_screen.dart';
 import 'package:cruise_buddy/core/constants/functions/error/custom_error.dart';
+import 'package:cruise_buddy/core/db/hive_db/adapters/package_details_adapter/package_details_adapter.dart';
+import 'package:cruise_buddy/core/db/hive_db/adapters/user_details_adapter/user_details_adapter.dart';
+import 'package:cruise_buddy/core/db/hive_db/boxes/package_details_box.dart';
+import 'package:cruise_buddy/core/db/hive_db/boxes/user_details_box.dart';
 import 'package:cruise_buddy/core/view_model/addItemToFavourites/add_item_to_favourites_bloc.dart';
 import 'package:cruise_buddy/core/view_model/bookMyCruise/book_my_cruise_bloc.dart';
+import 'package:cruise_buddy/core/view_model/createBookingByOwner/create_booking_by_owner_bloc.dart';
 import 'package:cruise_buddy/core/view_model/getCruiseTypes/get_cruise_types_bloc.dart';
 import 'package:cruise_buddy/core/view_model/getFavouritesList/get_favourites_list_bloc.dart';
 import 'package:cruise_buddy/core/view_model/getFeaturedBoats/get_featured_boats_bloc.dart';
@@ -27,15 +32,18 @@ import 'package:cruise_buddy/core/view_model/removeItemFromFavourites/remove_ite
 import 'package:cruise_buddy/core/view_model/seeMyBookingList/see_my_booking_list_bloc.dart';
 import 'package:cruise_buddy/core/view_model/todaysbookingcount/todays_booking_count_bloc.dart';
 import 'package:cruise_buddy/core/view_model/upcomingbookingscount/upcomg_bookingscount_bloc.dart';
+import 'package:cruise_buddy/core/view_model/updateUserProfile/update_user_profile_bloc.dart';
 import 'package:cruise_buddy/firebase_options.dart';
 import 'package:cruise_buddy/test_folder/api_test.dart';
 import 'package:cruise_buddy/test_folder/gpay_tedst.dart';
 import 'package:cruise_buddy/test_folder/popup_test.dart';
+import 'package:cruise_buddy/test_folder/test_package.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +51,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserDetailsDBAdapter());
+  Hive.registerAdapter(PackageDetailsDBAdapter());
+  userDetailsBox = await Hive.openBox<UserDetailsDB>('userDetailsBox');
+  packageDetailsBox = await Hive.openBox<PackageDetailsDB>('packageDetailsBox');
+
   runApp(const MyApp());
 }
 
@@ -103,6 +117,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ListownerPackagesBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UpdateUserProfileBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CreateBookingByOwnerBloc(),
         ),
       ],
       child: MaterialApp(

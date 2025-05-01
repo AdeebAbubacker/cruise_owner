@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cruise_buddy/core/model/list_my_cruise_model/list_my_cruise_model.dart';
 import 'package:cruise_buddy/core/services/ownerPacakage/owner_packages_service.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -23,7 +24,7 @@ class ListownerPackagesBloc
             emit(ListownerPackagesState.listpackagesFailure(error: failure));
           }
         }, (success) async {
-          emit(ListownerPackagesState.listpackages(upcomingCount: success));
+          emit(ListownerPackagesState.listpackages(listCruise: success));
         });
       } catch (e) {
         emit(ListownerPackagesState.listpackagesFailure(

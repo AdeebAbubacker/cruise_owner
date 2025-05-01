@@ -48,7 +48,7 @@ class MainLayoutState extends State<MainLayout> {
   String getTitle(int index) {
     switch (index) {
       case 1:
-        return 'My Booking';
+        return 'My Boats';
       case 2:
         return 'Schedule';
       case 3:

@@ -1,6 +1,9 @@
 import 'package:cruise_buddy/UI/Login%20Without/login_withoutan_account.dart';
 import 'package:cruise_buddy/UI/Widgets/Button/full_width_bluebutton.dart';
+import 'package:cruise_buddy/UI/Widgets/toast/custom_toast.dart';
 import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
+import 'package:cruise_buddy/core/db/hive_db/adapters/user_details_adapter/user_details_adapter.dart';
+import 'package:cruise_buddy/core/db/hive_db/boxes/user_details_box.dart';
 import 'package:cruise_buddy/core/routes/app_routes.dart';
 import 'package:cruise_buddy/core/view_model/login/login_bloc.dart';
 import 'package:cruise_buddy/core/view_model/postGoogleId/post_google_bloc.dart';
@@ -10,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:in_app_update/in_app_update.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,8 +23,27 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String? userEmail;
+  Future<void> checkForUpdate() async {
+    try {
+      final updateInfo = await InAppUpdate.checkForUpdate();
 
+      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        InAppUpdate.performImmediateUpdate().catchError((e) {});
+      }
+    } catch (e) {}
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      checkForUpdate();
+    });
+  }
+
+  String? userEmail;
+  String? emailErrorText;
+  String? passwordErrorText;
   // Google Sign-In Function
   // Future<void> signInWithGoogle() async {
   //   try {
@@ -117,21 +139,76 @@ class _LoginScreenState extends State<LoginScreen> {
                 loading: (_) {
                   print('loading');
                 },
-                loginSuccess: (success) {
+                loginvaldationFailure: (value) {
+                  print('validation failed ${value.loginValidation.message}');
+
+                  final genericError =
+                      "these credentials do not match our records.";
+
+                  final emailErrors = value.loginValidation.errors?.email;
+                  final passwordErrors = value.loginValidation.errors?.password;
+
+                  // Normalize and check
+                  final emailError = emailErrors != null &&
+                          !(emailErrors.first.toLowerCase().trim() ==
+                              genericError)
+                      ? emailErrors.first
+                      : null;
+
+                  final passwordError = passwordErrors != null &&
+                          !(passwordErrors.first.toLowerCase().trim() ==
+                              genericError)
+                      ? passwordErrors.first
+                      : null;
+
+                  setState(() {
+                    emailErrorText = emailError;
+                    passwordErrorText = passwordError;
+                  });
+
+                  CustomToast.showFlushBar(
+                    context: context,
+                    status: false,
+                    title: "Error",
+                    content:
+                        value.loginValidation.message ?? "Validation error",
+                  );
+                },
+                loginSuccess: (success) async {
+                  final loginModel = success
+                      .loginModel; // assuming you have loginModel inside state
+
+                  if (loginModel.user != null) {
+                    // Create UserDetailsDB from LoginModel's user
+                    final userDetails = UserDetailsDB(
+                      name: loginModel.user?.name ?? "",
+                      email: loginModel.user?.email ?? '',
+                      phone: loginModel.user?.phoneNumber,
+                      image: '', // Assuming you don't have an image in User
+                    );
+
+                    // Save it to Hive
+                    await userDetailsBox.put('user', userDetails);
+                  }
                   AppRoutes.navigateToMainLayoutScreen(context);
                 },
                 loginFailure: (failure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("//${failure.error}"),
-                    ),
+                
+                   CustomToast.showFlushBar(
+                    context: context,
+                    status: false,
+                    title: "Error",
+                    content:
+                       "Something went wrong",
                   );
                 },
                 noInternet: (value) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("No Internet please try again"),
-                    ),
+                 CustomToast.showFlushBar(
+                    context: context,
+                    status: false,
+                    title: "Error",
+                    content:
+                       "No Internet please try again",
                   );
                 },
               );
@@ -150,17 +227,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   AppRoutes.navigateToMainLayoutScreen(context);
                 },
                 addedFailure: (failure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("//${failure.error}"),
-                    ),
+                 
+                   CustomToast.showFlushBar(
+                    context: context,
+                    status: false,
+                    title: "Error",
+                    content:
+                        "Something went wrong",
                   );
                 },
                 noInternet: (value) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("No Internet please try again"),
-                    ),
+                 CustomToast.showFlushBar(
+                    context: context,
+                    status: false,
+                    title: "Error",
+                    content:
+                       "No Internet please try again",
                   );
                 },
               );
@@ -210,6 +292,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 12),
                   TextField(
                     decoration: InputDecoration(
+                      hintText: "Enter your email",
+                      errorText: emailErrorText,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(32),
                       ),
@@ -243,6 +327,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     obscureText: isTextVisible,
                     decoration: InputDecoration(
+                        hintText: "Enter your password",
+                        errorText: passwordErrorText,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: SvgPicture.asset(
@@ -287,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyles.ubuntu16black23w300),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 22),
                   FullWidthBlueButton(
                     text: 'Login',
                     onPressed: () {
@@ -300,27 +386,34 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const SizedBox(height: 12),
-                  // Row(
-                  //   children: [
-                  //     Expanded(
-                  //       child: Container(
-                  //         height: 1,
-                  //         color: Colors.grey,
-                  //       ),
-                  //     ),
-                  //     const Padding(
-                  //       padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  //       child: Text("or sign in with"),
-                  //     ),
-                  //     Expanded(
-                  //       child: Container(
-                  //         height: 1,
-                  //         color: Colors.grey,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+
                   const SizedBox(height: 12),
+                  Center(
+                    child: BlocBuilder<LoginBloc, LoginState>(
+                      builder: (context, state) {
+                        return state.map(
+                          initial: (value) {
+                            return SizedBox(height: 12);
+                          },
+                          loading: (value) {
+                            return CircularProgressIndicator();
+                          },
+                          loginvaldationFailure: (value) {
+                            return SizedBox(height: 12);
+                          },
+                          loginSuccess: (value) {
+                            return SizedBox(height: 12);
+                          },
+                          loginFailure: (value) {
+                            return SizedBox(height: 12);
+                          },
+                          noInternet: (value) {
+                            return SizedBox(height: 12);
+                          },
+                        );
+                      },
+                    ),
+                  ),
                   // BlocBuilder<LoginBloc, LoginState>(
                   //   builder: (context, loginState) {
                   //     return loginState.map(
@@ -494,45 +587,45 @@ class _LoginScreenState extends State<LoginScreen> {
                   //   },
                   // ),
                   // const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () {
-                      // Handle guest login action
-                      // Adjust to navigate as needed
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) {
-                          return LoginWithoutAnAccount();
-                        },
-                      ));
-                    },
-                    child: Text(
-                      "Login as Guest",
-                      style: TextStyles
-                          .ubuntu12blue23w300, // Adjust style as needed
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "Don’t have an account?",
-                              style: TextStyles.ubuntu16black23w400,
-                            ),
-                          ],
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          AppRoutes.navigateToRegistartionScreen(context);
-                        },
-                        child: Text(
-                          "Create an account",
-                          style: TextStyles.ubuntu12blue23w700,
-                        ),
-                      ),
-                    ],
-                  ),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     // Handle guest login action
+                  //     // Adjust to navigate as needed
+                  //     Navigator.push(context, MaterialPageRoute(
+                  //       builder: (context) {
+                  //         return LoginWithoutAnAccount();
+                  //       },
+                  //     ));
+                  //   },
+                  //   child: Text(
+                  //     "Login as Guest",
+                  //     style: TextStyles
+                  //         .ubuntu12blue23w300, // Adjust style as needed
+                  //   ),
+                  // ),
+                  // Row(
+                  //   children: [
+                  //     RichText(
+                  //       text: TextSpan(
+                  //         children: [
+                  //           TextSpan(
+                  //             text: "Don’t have an account?",
+                  //             style: TextStyles.ubuntu16black23w400,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     TextButton(
+                  //       onPressed: () {
+                  //         AppRoutes.navigateToRegistartionScreen(context);
+                  //       },
+                  //       child: Text(
+                  //         "Create an account",
+                  //         style: TextStyles.ubuntu12blue23w700,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: 40)
                 ],
               ),

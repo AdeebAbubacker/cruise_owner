@@ -294,7 +294,7 @@ mixin _$ListownerPackagesState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic upcomingCount) listpackages,
+    required TResult Function(List<ListMyCruiseModel> listCruise) listpackages,
     required TResult Function(String error) listpackagesFailure,
     required TResult Function() noInternet,
   }) =>
@@ -303,7 +303,7 @@ mixin _$ListownerPackagesState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic upcomingCount)? listpackages,
+    TResult? Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult? Function(String error)? listpackagesFailure,
     TResult? Function()? noInternet,
   }) =>
@@ -312,7 +312,7 @@ mixin _$ListownerPackagesState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic upcomingCount)? listpackages,
+    TResult Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult Function(String error)? listpackagesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -413,7 +413,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic upcomingCount) listpackages,
+    required TResult Function(List<ListMyCruiseModel> listCruise) listpackages,
     required TResult Function(String error) listpackagesFailure,
     required TResult Function() noInternet,
   }) {
@@ -425,7 +425,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic upcomingCount)? listpackages,
+    TResult? Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult? Function(String error)? listpackagesFailure,
     TResult? Function()? noInternet,
   }) {
@@ -437,7 +437,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic upcomingCount)? listpackages,
+    TResult Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult Function(String error)? listpackagesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -536,7 +536,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic upcomingCount) listpackages,
+    required TResult Function(List<ListMyCruiseModel> listCruise) listpackages,
     required TResult Function(String error) listpackagesFailure,
     required TResult Function() noInternet,
   }) {
@@ -548,7 +548,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic upcomingCount)? listpackages,
+    TResult? Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult? Function(String error)? listpackagesFailure,
     TResult? Function()? noInternet,
   }) {
@@ -560,7 +560,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic upcomingCount)? listpackages,
+    TResult Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult Function(String error)? listpackagesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -622,7 +622,7 @@ abstract class _$$ListpackagesImplCopyWith<$Res> {
           _$ListpackagesImpl value, $Res Function(_$ListpackagesImpl) then) =
       __$$ListpackagesImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({dynamic upcomingCount});
+  $Res call({List<ListMyCruiseModel> listCruise});
 }
 
 /// @nodoc
@@ -638,13 +638,13 @@ class __$$ListpackagesImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? upcomingCount = freezed,
+    Object? listCruise = null,
   }) {
     return _then(_$ListpackagesImpl(
-      upcomingCount: freezed == upcomingCount
-          ? _value.upcomingCount
-          : upcomingCount // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+      listCruise: null == listCruise
+          ? _value._listCruise
+          : listCruise // ignore: cast_nullable_to_non_nullable
+              as List<ListMyCruiseModel>,
     ));
   }
 }
@@ -652,14 +652,20 @@ class __$$ListpackagesImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ListpackagesImpl implements _Listpackages {
-  const _$ListpackagesImpl({required this.upcomingCount});
+  const _$ListpackagesImpl({required final List<ListMyCruiseModel> listCruise})
+      : _listCruise = listCruise;
 
+  final List<ListMyCruiseModel> _listCruise;
   @override
-  final dynamic upcomingCount;
+  List<ListMyCruiseModel> get listCruise {
+    if (_listCruise is EqualUnmodifiableListView) return _listCruise;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_listCruise);
+  }
 
   @override
   String toString() {
-    return 'ListownerPackagesState.listpackages(upcomingCount: $upcomingCount)';
+    return 'ListownerPackagesState.listpackages(listCruise: $listCruise)';
   }
 
   @override
@@ -668,12 +674,12 @@ class _$ListpackagesImpl implements _Listpackages {
         (other.runtimeType == runtimeType &&
             other is _$ListpackagesImpl &&
             const DeepCollectionEquality()
-                .equals(other.upcomingCount, upcomingCount));
+                .equals(other._listCruise, _listCruise));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(upcomingCount));
+      runtimeType, const DeepCollectionEquality().hash(_listCruise));
 
   /// Create a copy of ListownerPackagesState
   /// with the given fields replaced by the non-null parameter values.
@@ -688,11 +694,11 @@ class _$ListpackagesImpl implements _Listpackages {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic upcomingCount) listpackages,
+    required TResult Function(List<ListMyCruiseModel> listCruise) listpackages,
     required TResult Function(String error) listpackagesFailure,
     required TResult Function() noInternet,
   }) {
-    return listpackages(upcomingCount);
+    return listpackages(listCruise);
   }
 
   @override
@@ -700,11 +706,11 @@ class _$ListpackagesImpl implements _Listpackages {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic upcomingCount)? listpackages,
+    TResult? Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult? Function(String error)? listpackagesFailure,
     TResult? Function()? noInternet,
   }) {
-    return listpackages?.call(upcomingCount);
+    return listpackages?.call(listCruise);
   }
 
   @override
@@ -712,13 +718,13 @@ class _$ListpackagesImpl implements _Listpackages {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic upcomingCount)? listpackages,
+    TResult Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult Function(String error)? listpackagesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
   }) {
     if (listpackages != null) {
-      return listpackages(upcomingCount);
+      return listpackages(listCruise);
     }
     return orElse();
   }
@@ -765,10 +771,10 @@ class _$ListpackagesImpl implements _Listpackages {
 }
 
 abstract class _Listpackages implements ListownerPackagesState {
-  const factory _Listpackages({required final dynamic upcomingCount}) =
-      _$ListpackagesImpl;
+  const factory _Listpackages(
+      {required final List<ListMyCruiseModel> listCruise}) = _$ListpackagesImpl;
 
-  dynamic get upcomingCount;
+  List<ListMyCruiseModel> get listCruise;
 
   /// Create a copy of ListownerPackagesState
   /// with the given fields replaced by the non-null parameter values.
@@ -849,7 +855,7 @@ class _$ListpackagesFailureImpl implements ListpackagesFailure {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic upcomingCount) listpackages,
+    required TResult Function(List<ListMyCruiseModel> listCruise) listpackages,
     required TResult Function(String error) listpackagesFailure,
     required TResult Function() noInternet,
   }) {
@@ -861,7 +867,7 @@ class _$ListpackagesFailureImpl implements ListpackagesFailure {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic upcomingCount)? listpackages,
+    TResult? Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult? Function(String error)? listpackagesFailure,
     TResult? Function()? noInternet,
   }) {
@@ -873,7 +879,7 @@ class _$ListpackagesFailureImpl implements ListpackagesFailure {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic upcomingCount)? listpackages,
+    TResult Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult Function(String error)? listpackagesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),
@@ -981,7 +987,7 @@ class _$NoInternetImpl implements _NoInternet {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic upcomingCount) listpackages,
+    required TResult Function(List<ListMyCruiseModel> listCruise) listpackages,
     required TResult Function(String error) listpackagesFailure,
     required TResult Function() noInternet,
   }) {
@@ -993,7 +999,7 @@ class _$NoInternetImpl implements _NoInternet {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic upcomingCount)? listpackages,
+    TResult? Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult? Function(String error)? listpackagesFailure,
     TResult? Function()? noInternet,
   }) {
@@ -1005,7 +1011,7 @@ class _$NoInternetImpl implements _NoInternet {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic upcomingCount)? listpackages,
+    TResult Function(List<ListMyCruiseModel> listCruise)? listpackages,
     TResult Function(String error)? listpackagesFailure,
     TResult Function()? noInternet,
     required TResult orElse(),

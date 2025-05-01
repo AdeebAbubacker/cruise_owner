@@ -1,6 +1,6 @@
 import 'package:cruise_buddy/UI/Screens/Auth/forgot_password_screen.dart';
 import 'package:cruise_buddy/UI/Screens/Auth/login_screens.dart';
-import 'package:cruise_buddy/UI/Screens/Auth/signup_screen.dart';
+
 import 'package:cruise_buddy/UI/Screens/On%20Boarding/onboardingscreen_one.dart';
 import 'package:cruise_buddy/UI/Screens/On%20Boarding/onboardingscreen_three.dart';
 import 'package:cruise_buddy/UI/Screens/On%20Boarding/onboardingscreen_two.dart';
@@ -37,12 +37,12 @@ class AppRoutes {
     );
   }
 
-  static navigateToRegistartionScreen(BuildContext context) {
-    return Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SignupScreen()),
-    );
-  }
+  // static navigateToRegistartionScreen(BuildContext context) {
+  //   return Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => const SignupScreen()),
+  //   );
+  // }
 
   static navigateToForgotPasswordScreen(BuildContext context) {
     return Navigator.push(

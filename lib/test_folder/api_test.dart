@@ -1,9 +1,5 @@
-import 'package:cruise_buddy/core/services/bookingCount/booking_count_servcie.dart';
-import 'package:cruise_buddy/core/services/ownerPacakage/owner_packages_service.dart';
-import 'package:cruise_buddy/core/services/seeMyBookingList/seeMyBookingListService.dart';
-import 'package:cruise_buddy/core/view_model/bookMyCruise/book_my_cruise_bloc.dart';
-import 'package:cruise_buddy/core/view_model/seeMyBookingList/see_my_booking_list_bloc.dart';
-import 'package:cruise_buddy/core/view_model/upcomingbookingscount/upcomg_bookingscount_bloc.dart';
+import 'package:cruise_buddy/core/view_model/createBookingByOwner/create_booking_by_owner_bloc.dart';
+import 'package:cruise_buddy/core/view_model/listOwnerpackages/listowner_packages_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +13,7 @@ class ApiTest extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 100),
-            BlocBuilder<UpcomgBookingscountBloc, UpcomgBookingscountState>(
+            BlocBuilder<CreateBookingByOwnerBloc, CreateBookingByOwnerState>(
               builder: (context, state) {
                 return state.map(
                   initial: (value) {
@@ -26,10 +22,10 @@ class ApiTest extends StatelessWidget {
                   loading: (value) {
                     return Text("0");
                   },
-                  upcmingCount: (value) {
-                    return Text("${value.upcomingCount}");
+                  getCruiseTypes: (value) {
+                    return Text("${value.cruisetypemodel.toString()}");
                   },
-                  upcomingcountFailure: (value) {
+                  getCruiseTypesFailure: (value) {
                     return Text("0");
                   },
                   noInternet: (value) {
@@ -40,7 +36,13 @@ class ApiTest extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                await OwnerPackagesService().getOwnerspackages();
+                BlocProvider.of<CreateBookingByOwnerBloc>(context).add(
+                  CreateBookingByOwnerEvent.getCruiseTypes(
+                    packageId: '53',
+                    bookingTypeId: '1',
+                    startDate: '2027-09-07',
+                  ),
+                );
               },
               child: Text("data"),
             ),

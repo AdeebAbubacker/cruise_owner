@@ -66,7 +66,7 @@ class GuestHomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          ...dummyBoats.map((boat) => _buildBoatCard(boat)).toList(),
+          ...dummyBoats.map((boat) => _buildBoatCard(boat)),
 
           const SizedBox(height: 32),
 
