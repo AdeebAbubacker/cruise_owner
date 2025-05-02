@@ -3,6 +3,7 @@ import 'package:cruise_buddy/core/view_model/listOwnerpackages/listowner_package
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BoatsScreen extends StatefulWidget {
   const BoatsScreen({super.key});
@@ -44,7 +45,8 @@ class _BoatsScreenState extends State<BoatsScreen> {
               itemBuilder: (context, index) {
                 final cruise = value.listCruise[0].owner?.cruises;
                 return Card(
-                  elevation: 3,
+                  color: const Color.fromARGB(255, 252, 252, 252),
+                  // elevation: 3,
                   margin:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   shape: RoundedRectangleBorder(
@@ -79,8 +81,12 @@ class _BoatsScreenState extends State<BoatsScreen> {
                             children: [
                               Text(
                                 cruise?[index].name ?? '',
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                // style: const TextStyle(
+                                //     fontSize: 16, fontWeight: FontWeight.bold),
+                                style: GoogleFonts.ubuntu(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                               const SizedBox(height: 4),
                               // Text("Price: ₹${cruise.name ?? 'N/A'}"),

@@ -100,7 +100,9 @@ class MainLayoutState extends State<MainLayout> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: _selectedIndex == 1
+            ? const Color.fromARGB(255, 249, 249, 249)
+            : Colors.white,
         appBar: _selectedIndex != 0
             ? AppBar(
                 forceMaterialTransparency: true,
