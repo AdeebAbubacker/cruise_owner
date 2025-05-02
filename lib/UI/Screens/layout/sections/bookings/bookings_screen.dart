@@ -7,10 +7,12 @@ import 'package:cruise_buddy/core/db/hive_db/boxes/package_details_box.dart';
 import 'package:cruise_buddy/core/model/get_my_booking_list/get_my_booking_list.dart';
 import 'package:cruise_buddy/core/view_model/createBookingByOwner/create_booking_by_owner_bloc.dart';
 import 'package:cruise_buddy/core/view_model/seeMyBookingList/see_my_booking_list_bloc.dart';
+import 'package:cruise_buddy/test_folder/api_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -323,29 +325,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                         padding: const EdgeInsets.only(
                           right: 20,
                         ),
-                        child:
-
-                            // ElevatedButton(
-                            //   style: ElevatedButton.styleFrom(
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.circular(
-                            //           4), // Circular border radius
-                            //     ),
-                            //     padding: const EdgeInsets.symmetric(
-                            //         horizontal: 24,
-                            //         vertical: 12), // Optional: custom padding
-                            //     backgroundColor: const Color.fromARGB(255, 70, 105,
-                            //         150), // Optional: custom background color
-                            //   ),
-                            //   onPressed: () {
-                            //     showBookingDialog(context);
-                            //   },
-                            //   child: Text(
-                            //     "Add Booking",
-                            //     style: TextStyles.ubntu15w600white,
-                            //   ),
-                            // ),
-                            AddBookingIcon(
+                        child: AddBookingIcon(
                           onTap: () {
                             showBookingDialog(context); // Your dialog function
                           },
@@ -437,6 +417,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 10),
 
                 // Booking list
