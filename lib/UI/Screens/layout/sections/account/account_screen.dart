@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:cruise_buddy/UI/Screens/Auth/login_screens.dart';
 import 'package:cruise_buddy/UI/Screens/misc/privacy_policy.dart';
 import 'package:cruise_buddy/UI/Screens/misc/terms_and_c_screen.dart';
+import 'package:cruise_buddy/UI/Widgets/toast/custom_toast.dart';
+import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/db/hive_db/adapters/user_details_adapter/user_details_adapter.dart';
 import 'package:cruise_buddy/core/db/hive_db/boxes/user_details_box.dart';
 import 'package:cruise_buddy/core/services/auth/auth_services.dart';
@@ -9,10 +11,13 @@ import 'package:cruise_buddy/core/view_model/updateUserProfile/update_user_profi
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -71,6 +76,30 @@ class _AccountScreenState extends State<AccountScreen> {
     }
   }
 
+  void makeCall(String number, BuildContext context) async {
+    final numberWithCountryCode =
+        number.startsWith('+') ? number : '+91$number';
+    final Uri telUri = Uri(scheme: 'tel', path: numberWithCountryCode);
+    try {
+      if (Platform.isAndroid || Platform.isIOS) {
+        await launchUrl(telUri);
+      } else {
+        CustomToast.showFlushBar(
+          context: context,
+          status: false,
+          title: "Oops",
+          content: 'Phone calls are not supported on this platform',
+        );
+      }
+    } catch (e) {
+      CustomToast.showFlushBar(
+          context: context,
+          status: false,
+          title: "Oops",
+          content: 'An unexpected error occurred');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<UpdateUserProfileBloc, UpdateUserProfileState>(
@@ -87,17 +116,19 @@ class _AccountScreenState extends State<AccountScreen> {
           },
           updateuser: (value) async {
             Navigator.of(context).pop(); // Close loading
-            // Create UserDetailsDB from LoginModel's user
-            final userDetails = UserDetailsDB(
-              name: value.updateuser.user?.name ?? "",
-              email: value.updateuser.user?.email ?? "",
-              phone: value.updateuser.user?.phoneNumber ?? "",
-              image: value.updateuser.user?.imagePath ?? "",
-            );
+            if (value.updateuser != null) {
+              // Create UserDetailsDB from LoginModel's user
+              final userDetails = UserDetailsDB(
+                name: value.updateuser.user?.name ?? "",
+                email: value.updateuser.user?.email ?? "",
+                phone: value.updateuser.user?.phoneNumber ?? "",
+                image: value.updateuser.user?.imagePath ?? "",
+              );
 
-            // Save it to Hive
-            await userDetailsBox.put('user', userDetails);
-                      showDialog(
+              // Save it to Hive
+              await userDetailsBox.put('user', userDetails);
+            }
+            showDialog(
               context: context,
               builder: (context) => AlertDialog(
                 title: const Text('Success'),
@@ -149,121 +180,139 @@ class _AccountScreenState extends State<AccountScreen> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 10),
-            if (isEditing)
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300], // light grey background
-                      shape: BoxShape.circle, // make it circular
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.check, color: Colors.green),
-                      onPressed: () {
-                        setState(() {
-                          isEditing = false;
-                          // Save changes logic here
-                          BlocProvider.of<UpdateUserProfileBloc>(context).add(
-                            UpdateUserProfileEvent.updateprofile(
-                              name: nameController.text.trim(),
-                              email: emailController.text.trim(),
-                              phone: phoneController.text.trim(),
-                              image: _pickedImage?.path ??
-                                  '', // pass image path if selected
-                            ),
-                          );
-                        });
-                      },
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 10),
+              if (isEditing)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300], // light grey background
+                        shape: BoxShape.circle, // make it circular
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.check, color: Colors.green),
+                        onPressed: () {
+                          setState(() {
+                            isEditing = false;
+                            // Save changes logic here
+                            BlocProvider.of<UpdateUserProfileBloc>(context).add(
+                              UpdateUserProfileEvent.updateprofile(
+                                name: nameController.text.trim(),
+                                email: emailController.text.trim(),
+                                phone: phoneController.text.trim(),
+                                image: _pickedImage?.path ??
+                                    '', // pass image path if selected
+                              ),
+                            );
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                if (!isEditing) ...[
-                  CustomPaint(
-                    size: const Size(120, 120),
-                    painter: DottedBorderPainter(),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  if (!isEditing) ...[
+                    CustomPaint(
+                      size: const Size(120, 120),
+                      painter: DottedBorderPainter(),
+                    ),
+                  ],
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: _pickedImage != null
+                        ? FileImage(File(_pickedImage!.path)) // Local image
+                        : imageUrl != null
+                            ? NetworkImage(imageUrl!) // Network image
+                            : null, // Default if no image
+                    child: _pickedImage == null && imageUrl == null
+                        ? ClipOval(
+                            child: Icon(Icons.person),
+                          )
+                        : null,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 5,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (isEditing) {
+                          _pickImage();
+                        } else {
+                          setState(() {
+                            isEditing = !isEditing;
+                          });
+                        }
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          shape: BoxShape.circle,
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: isEditing
+                            ? SvgPicture.asset(
+                                'assets/image/profile/profile_pic_edit.svg')
+                            : SvgPicture.asset(
+                                'assets/image/profile/profile_pic_edit.svg'),
+                      ),
+                    ),
                   ),
                 ],
-                CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: _pickedImage != null
-                      ? FileImage(File(_pickedImage!.path)) // Local image
-                      : imageUrl != null
-                          ? NetworkImage(imageUrl!) // Network image
-                          : null, // Default if no image
-                  child: _pickedImage == null && imageUrl == null
-                      ? ClipOval(
-                          child: Icon(Icons.person),
-                        )
-                      : null,
+              ),
+              const SizedBox(height: 20),
+              if (isEditing) ...[
+                BuildEditableField(
+                  hinttext: 'Enter yoy name',
+                  textEditingController: nameController,
+                  focusNode: nameFocusnode,
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: 5,
-                  child: GestureDetector(
-                    onTap: () {
-                      if (isEditing) {
-                        _pickImage();
-                      } else {
-                        setState(() {
-                          isEditing = !isEditing;
-                        });
-                      }
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(4),
-                      child: isEditing
-                          ? SvgPicture.asset(
-                              'assets/image/profile/profile_pic_edit.svg')
-                          : SvgPicture.asset(
-                              'assets/image/profile/profile_pic_edit.svg'),
-                    ),
-                  ),
+                BuildEditableField(
+                  hinttext: 'Enter your email',
+                  textEditingController: emailController,
+                  focusNode: emailFocusnode,
+                ),
+                // BuildEditableField(
+                //   hinttext: 'Enter your phone',
+                //   textEditingController: phoneController,
+                //   focusNode: phoneNoFocusnode,
+                // ),
+                StyledPhoneNumberField(
+                  controller: phoneController,
+                  focusNode: phoneNoFocusnode,
+                  onChanged: (value) {
+                    print('Phone: $value');
+                  },
+                ),
+              ] else ...[
+                Text(
+                  nameController.text,
+                  style: TextStyles.ubuntu18w700,
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  emailController.text,
+                  style: TextStyles.ubuntu17,
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  phoneController.text,
+                  style: TextStyles.ubuntu17,
                 ),
               ],
-            ),
-            const SizedBox(height: 20),
-            if (isEditing) ...[
-              BuildEditableField(
-                textEditingController: nameController,
-                focusNode: nameFocusnode,
-              ),
-              BuildEditableField(
-                textEditingController: emailController,
-                focusNode: emailFocusnode,
-              ),
-              BuildEditableField(
-                textEditingController: phoneController,
-                focusNode: phoneNoFocusnode,
-              ),
-            ] else ...[
-              Text(nameController.text,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 5),
-              Text(emailController.text,
-                  style: const TextStyle(fontSize: 14, color: Colors.black54)),
-              const SizedBox(height: 5),
-              Text(phoneController.text,
-                  style: const TextStyle(fontSize: 14, color: Colors.black54)),
-            ],
-            const SizedBox(height: 30),
-            Expanded(
-              child: ListView(
+              const SizedBox(height: 30),
+              ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 children: [
                   // ListTile(
@@ -278,11 +327,51 @@ class _AccountScreenState extends State<AccountScreen> {
                   // ),
                   // const Divider(),
                   ListTile(
-                    leading: const Icon(Icons
-                        .description), // or Icons.rule, Icons.article, Icons.gavel
-                    title: const Text('T & C'),
-                    trailing: SvgPicture.asset(
-                      'assets/image/profile/arrow_right.svg',
+                    leading: SvgPicture.asset(
+                      'assets/icons/support_settings.svg',
+                      color: Colors.blue,
+                    ), // or Icons.rule, Icons.article, Icons.gavel
+                    title: Text(
+                      'Get Support',
+                      style: GoogleFonts.ubuntu(
+                        fontSize: 15,
+                      ),
+                    ),
+
+                    onTap: () {
+                      makeCall('9072855886', context);
+                    },
+                  ),
+                  SizedBox(height: 5),
+                  // const Divider(),
+                  ListTile(
+                    leading: SvgPicture.asset(
+                      'assets/icons/privacy_settings.svg',
+                      color: Colors.blue,
+                    ),
+                    title: Text('Privacy Policy',
+                        style: TextStyles.ubuntu15normal),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return PrivacyPolicyScreen();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 5),
+                  // const Divider(),
+                  ListTile(
+                    leading: SvgPicture.asset(
+                      'assets/icons/terms&c.svg',
+                      color: Colors.blue,
+                    ),
+                    title: Text(
+                      'Terms and Conditions',
+                      style: TextStyles.ubuntu15normal,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -295,36 +384,28 @@ class _AccountScreenState extends State<AccountScreen> {
                       );
                     },
                   ),
-
-                  const Divider(),
+                  // const Divider(),
+                  SizedBox(height: 5),
                   ListTile(
                     leading: SvgPicture.asset(
-                      'assets/image/profile/privacy_policy.svg',
+                      'assets/icons/app_version_settings.svg',
+                      color: Colors.blue,
                     ),
-                    title: const Text('Privacy Policy'),
-                    trailing: SvgPicture.asset(
-                      'assets/image/profile/arrow_right.svg',
+                    title:
+                        Text('App Version', style: TextStyles.ubuntu15normal),
+                    trailing: Text(
+                      "v1.0.17",
+                      style: TextStyles.ubuntu15normal,
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return PrivacyPolicyScreen();
-                          },
-                        ),
-                      );
-                    },
                   ),
-                  const Divider(),
+                  SizedBox(height: 5),
+                  // const Divider(),
                   ListTile(
                     leading: SvgPicture.asset(
-                      'assets/image/profile/logout.svg',
+                      'assets/icons/logout_settings.svg',
+                      color: Colors.blue,
                     ),
-                    title: const Text(
-                      'Logout',
-                      style: TextStyle(color: Color(0xff1F8386)),
-                    ),
+                    title: Text('Logout', style: TextStyles.ubuntu15normal),
                     trailing: SvgPicture.asset(
                       'assets/image/profile/arrow_right.svg',
                     ),
@@ -358,10 +439,13 @@ class _AccountScreenState extends State<AccountScreen> {
                       }
                     },
                   ),
+                  SizedBox(
+                    height: 30,
+                  ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -423,12 +507,14 @@ class DottedBorderPainter extends CustomPainter {
 }
 
 class BuildEditableField extends StatelessWidget {
+  final String hinttext;
   FocusNode focusNode = FocusNode();
   TextEditingController textEditingController = TextEditingController();
   BuildEditableField({
     super.key,
     required this.textEditingController,
     required this.focusNode,
+    required this.hinttext,
   });
 
   @override
@@ -439,8 +525,11 @@ class BuildEditableField extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         child: TextField(
           focusNode: focusNode,
+          style: TextStyles.ubuntutextfieldText,
           controller: textEditingController,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            hintText: hinttext,
+            hintStyle: TextStyles.ubuntuhintText,
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(25))),
             focusedBorder: OutlineInputBorder(
@@ -459,6 +548,59 @@ class BuildEditableField extends StatelessWidget {
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class StyledPhoneNumberField extends StatelessWidget {
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final Function(String)? onChanged;
+
+  const StyledPhoneNumberField({
+    super.key,
+    required this.controller,
+    required this.focusNode,
+    this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: IntlPhoneField(
+          controller: controller,
+          focusNode: focusNode,
+          decoration: InputDecoration(
+            hintText: 'Enter phone number',
+            hintStyle: TextStyle(color: Colors.grey),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide:
+                  const BorderSide(color: Color.fromARGB(255, 210, 176, 176)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: const BorderSide(
+                  color: Color.fromARGB(255, 108, 108, 108), width: 1.7),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: const BorderSide(
+                color: Color(0xFFFFC1C1), // light red
+                width: 1.5,
+              ),
+            ),
+          ),
+          initialCountryCode: 'IN',
+          onChanged: (phone) {
+            if (onChanged != null) onChanged!(phone.completeNumber);
+          },
         ),
       ),
     );
