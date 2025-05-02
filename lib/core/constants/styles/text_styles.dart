@@ -220,4 +220,14 @@ class TextStyles {
     fontWeight: FontWeight.w600,
     color: const Color.fromARGB(255, 17, 17, 17),
   );
+  static final TextStyle ubntu15w600white = ubuntu.copyWith(
+    fontSize: 15,
+    fontWeight: FontWeight.w600,
+    color: const Color.fromARGB(255, 255, 255, 255),
+  );
+  static final TextStyle ubntu9w400white = ubuntu.copyWith(
+    fontSize: 9,
+    fontWeight: FontWeight.w400,
+    color: const Color.fromARGB(255, 255, 255, 255),
+  );
 }

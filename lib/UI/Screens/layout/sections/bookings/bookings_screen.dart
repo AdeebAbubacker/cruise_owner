@@ -1,6 +1,7 @@
 import 'package:cruise_buddy/UI/Screens/layout/sections/Home/widgets/booking_type_dropdwon.dart';
 import 'package:cruise_buddy/UI/Screens/layout/sections/Home/widgets/pacakge_dropddown.dart';
 import 'package:cruise_buddy/UI/Widgets/toast/custom_toast.dart';
+import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/db/hive_db/adapters/package_details_adapter/package_details_adapter.dart';
 import 'package:cruise_buddy/core/db/hive_db/boxes/package_details_box.dart';
 import 'package:cruise_buddy/core/model/get_my_booking_list/get_my_booking_list.dart';
@@ -8,6 +9,7 @@ import 'package:cruise_buddy/core/view_model/createBookingByOwner/create_booking
 import 'package:cruise_buddy/core/view_model/seeMyBookingList/see_my_booking_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -115,35 +117,14 @@ class _BookingsScreenState extends State<BookingsScreen> {
                 return StatefulBuilder(
                   builder: (context, setState) {
                     return AlertDialog(
-                      title: const Text("New Booking"),
+                      title: Text(
+                        "New Booking",
+                        style: GoogleFonts.ubuntu(),
+                      ),
                       content: SingleChildScrollView(
                         child: Column(
                           children: [
-                            // Dropdown for packages
-
-                            // ValueListenableBuilder<Box<PackageDetailsDB>>(
-                            //   valueListenable: packageDetailsBox.listenable(),
-                            //   builder: (context, box, _) {
-                            //     final packages = box.values.toList();
-
-                            //     return DropdownButton<PackageDetailsDB>(
-                            //       isExpanded: true,
-                            //       value: selectedPackage,
-                            //       hint: const Text("Select a Package"),
-                            //       items: packages.map((pkg) {
-                            //         return DropdownMenuItem<PackageDetailsDB>(
-                            //           value: pkg,
-                            //           child: PackageDropdownItem(package: pkg),
-                            //         );
-                            //       }).toList(),
-                            //       onChanged: (val) {
-                            //         setState(() => selectedPackage = val);
-                            //       },
-                            //       dropdownColor: Colors.white,
-                            //       itemHeight: 70.0,
-                            //     );
-                            //   },
-                            // ),
+                            Divider(),
                             ValueListenableBuilder<Box<PackageDetailsDB>>(
                               valueListenable: packageDetailsBox.listenable(),
                               builder: (context, box, _) {
@@ -167,52 +148,45 @@ class _BookingsScreenState extends State<BookingsScreen> {
                                   }
                                 }
 
-                                return DropdownButton<PackageBookingSelection>(
-                                  isExpanded: true,
-                                  value: selectedPackage,
-                                  hint: const Text("Select a Package"),
-                                  items: packageItems,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      selectedPackage = val;
-                                      selectedBookingTypeId =
-                                          val?.bookingTypeId ?? '';
-                                    });
-                                  },
-                                  dropdownColor: Colors.white,
-                                  itemHeight: 70.0,
+                                return DropdownButtonHideUnderline(
+                                  child:
+                                      DropdownButton<PackageBookingSelection>(
+                                    isExpanded: true,
+                                    value: selectedPackage,
+                                    hint: Text(
+                                      "Select a Package",
+                                      style: GoogleFonts.ubuntu(),
+                                    ),
+                                    items: packageItems,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        selectedPackage = val;
+                                        selectedBookingTypeId =
+                                            val?.bookingTypeId ?? '';
+                                      });
+                                    },
+                                    dropdownColor: Colors.white,
+                                    itemHeight: 70.0,
+                                  ),
                                 );
                               },
                             ),
                             //   ],
                             // ),
                             const SizedBox(height: 10),
-                            // ValueListenableBuilder<Box<PackageDetailsDB>>(
-                            //   valueListenable: packageDetailsBox.listenable(),
-                            //   builder: (context, box, _) {
-                            //     final packages = box.values.toList();
-
-                            //     return DropdownButton<PackageDetailsDB>(
-                            //       isExpanded: true,
-                            //       value: selectedPackage,
-                            //       hint: const Text("Select a Booking"),
-                            //       items: packages.map((pkg) {
-                            //         return DropdownMenuItem<PackageDetailsDB>(
-                            //           value: pkg,
-                            //           child: BookingTypeDropdown(package: pkg),
-                            //         );
-                            //       }).toList(),
-                            //       onChanged: (val) {
-                            //         setState(() => selectedPackage = val);
-                            //       },
-                            //       dropdownColor: Colors.white,
-                            //       itemHeight: 70.0,
-                            //     );
-                            //   },
-                            // ),
 
                             // Start Date
-                            ElevatedButton(
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                side: const BorderSide(
+                                    color: Color(0xFF1F8386), width: 1.5),
+                                foregroundColor: Color(0xFF1F8386),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 12),
+                              ),
                               onPressed: () async {
                                 final picked = await showDatePicker(
                                   context: context,
@@ -231,8 +205,18 @@ class _BookingsScreenState extends State<BookingsScreen> {
 
                             const SizedBox(height: 10),
 
-                            // End Date
-                            ElevatedButton(
+// End Date
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                side: const BorderSide(
+                                    color: Color(0xFF1F8386), width: 1.5),
+                                foregroundColor: Color(0xFF1F8386),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 12),
+                              ),
                               onPressed: () async {
                                 final picked = await showDatePicker(
                                   context: context,
@@ -257,6 +241,18 @@ class _BookingsScreenState extends State<BookingsScreen> {
                           child: const Text("Cancel"),
                         ),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  5), // Set to 0 for sharp corners
+                            ),
+                            backgroundColor: const Color(
+                                0xFF1F8386), // Optional: custom background
+                            foregroundColor:
+                                Colors.white, // Optional: custom text color
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                          ),
                           onPressed: () {
                             if (selectedStart == null ||
                                 selectedPackage == null) return;
@@ -275,8 +271,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                                 .add(
                               CreateBookingByOwnerEvent.getCruiseTypes(
                                 packageId: packageId,
-                                bookingTypeId:
-                                    selectedBookingTypeId, // Assuming bookingTypeId is '1' (this can be dynamic as well).
+                                bookingTypeId: selectedBookingTypeId,
                                 startDate: startDate,
                                 endDate: endDate,
                               ),
@@ -325,27 +320,36 @@ class _BookingsScreenState extends State<BookingsScreen> {
                   children: [
                     Spacer(),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        right: 20,
-                      ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                4), // Circular border radius
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 12), // Optional: custom padding
-                          backgroundColor: const Color.fromARGB(255, 231, 231,
-                              231), // Optional: custom background color
+                        padding: const EdgeInsets.only(
+                          right: 20,
                         ),
-                        onPressed: () {
-                          showBookingDialog(context);
-                        },
-                        child: const Text("Add Booking"),
-                      ),
-                    ),
+                        child:
+
+                            // ElevatedButton(
+                            //   style: ElevatedButton.styleFrom(
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(
+                            //           4), // Circular border radius
+                            //     ),
+                            //     padding: const EdgeInsets.symmetric(
+                            //         horizontal: 24,
+                            //         vertical: 12), // Optional: custom padding
+                            //     backgroundColor: const Color.fromARGB(255, 70, 105,
+                            //         150), // Optional: custom background color
+                            //   ),
+                            //   onPressed: () {
+                            //     showBookingDialog(context);
+                            //   },
+                            //   child: Text(
+                            //     "Add Booking",
+                            //     style: TextStyles.ubntu15w600white,
+                            //   ),
+                            // ),
+                            AddBookingIcon(
+                          onTap: () {
+                            showBookingDialog(context); // Your dialog function
+                          },
+                        )),
                   ],
                 ),
 
@@ -487,6 +491,58 @@ class _BookingsScreenState extends State<BookingsScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class AddBookingIcon extends StatefulWidget {
+  final VoidCallback onTap; // This is the callback function
+
+  const AddBookingIcon({super.key, required this.onTap});
+
+  @override
+  State<AddBookingIcon> createState() => _AddBookingIconState();
+}
+
+class _AddBookingIconState extends State<AddBookingIcon>
+    with SingleTickerProviderStateMixin {
+  bool isRotated = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            isRotated = !isRotated;
+          });
+          widget.onTap(); // Call the passed function when tapped
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedRotation(
+              turns: isRotated ? 0.25 : 0.0,
+              duration: const Duration(milliseconds: 300),
+              child: const Icon(
+                Icons.add_circle,
+                size: 40,
+                color: Color.fromARGB(255, 70, 105, 150),
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Text(
+              "Add Booking",
+              style: TextStyle(
+                color: Color.fromARGB(255, 70, 105, 150),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

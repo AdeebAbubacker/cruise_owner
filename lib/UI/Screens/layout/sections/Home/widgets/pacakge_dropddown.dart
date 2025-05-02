@@ -1,5 +1,7 @@
+import 'package:cruise_buddy/core/constants/styles/text_styles.dart';
 import 'package:cruise_buddy/core/db/hive_db/adapters/package_details_adapter/package_details_adapter.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // class PackageDropdownItem extends StatelessWidget {
 //   final PackageDetailsDB package;
@@ -64,16 +66,37 @@ class PackageDropdownItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(6),
-          child: package.cruiseImage != null
-              ? Image.network(
-                  package.cruiseImage!,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                )
-              : const Icon(Icons.image_not_supported, size: 50),
+        SizedBox(
+          width: 50,
+          height: 50,
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: package.cruiseImage != null
+                    ? Image.network(
+                        package.cruiseImage!,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      )
+                    : const Icon(Icons.image_not_supported, size: 50),
+              ),
+              Positioned(
+                child: Container(
+                  alignment: Alignment.center,
+                  color:
+                      Colors.black.withOpacity(0.3), // Optional: dark overlay
+                  child: Center(
+                    child: Text(
+                      package.packageName == '1' ? 'Premium' : 'Delux',
+                      style: TextStyles.ubntu9w400white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         const SizedBox(width: 10),
         Expanded(
@@ -81,16 +104,14 @@ class PackageDropdownItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${package.packageName ?? 'No package name'} - Booking Type: ${bookingTypeId ?? 'N/A'}',
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                '${package.cruiseName} (${bookingTypeId == '1' ? 'Day Cruise' : 'Full Day'})',
+                // style: const TextStyle(fontSize: 12, color: Colors.grey),
+                style: GoogleFonts.ubuntu(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
                 overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-              Text(
-                package.cruiseName ?? 'Unknown Cruise',
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
+                maxLines: 4,
               ),
             ],
           ),
