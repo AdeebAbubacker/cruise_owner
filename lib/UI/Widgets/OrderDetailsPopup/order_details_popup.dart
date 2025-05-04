@@ -16,6 +16,7 @@ class BookingDetailsPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Center(
         child: Text(
@@ -25,83 +26,22 @@ class BookingDetailsPopup extends StatelessWidget {
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // QR Code
-          Container(
-            margin: const EdgeInsets.only(bottom: 16),
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: RepaintBoundary(
-              key: qrKey,
-              child: QrImageView(
-                data: booking.orderId.toString(),
-                version: QrVersions.auto,
-                size: 100,
-                backgroundColor: Colors.white,
-              ),
-            ),
-          ),
+          // Optional: QR code
+          // You can re-enable this block if needed
+
           Text(
             'Order ID: ${booking.orderId.toString()}',
             style:
-                GoogleFonts.ubuntu(fontSize: 16, fontWeight: FontWeight.w500),
+                GoogleFonts.ubuntu(fontSize: 12, fontWeight: FontWeight.w500),
           ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              const Icon(Icons.person, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  booking.user?.name.toString() ?? "N/A",
-                  style: GoogleFonts.ubuntu(),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(Icons.email, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  booking.user?.email.toString() ?? "N/A",
-                  style: GoogleFonts.ubuntu(),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(Icons.phone, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  booking.user?.phoneNumber.toString() ?? "N/A",
-                  style: GoogleFonts.ubuntu(),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(Icons.attach_money, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  'Total: ₹${booking.totalAmount.toString() ?? "N/A"}',
-                  style: GoogleFonts.ubuntu(),
-                ),
-              ),
-            ],
-          ),
+          const SizedBox(height: 16),
+          _infoRow('Name', booking.user?.name ?? 'N/A'),
+          _infoRow('Email', booking.user?.email ?? 'N/A'),
+          _infoRow('Phone', booking.user?.phoneNumber ?? 'N/A'),
+
+          _infoRow('Total', '₹${booking.totalAmount ?? 'N/A'}'),
         ],
       ),
       actions: [
@@ -111,8 +51,30 @@ class BookingDetailsPopup extends StatelessWidget {
             'Close',
             style: GoogleFonts.ubuntu(color: Colors.red),
           ),
-        )
+        ),
       ],
+    );
+  }
+
+  Widget _infoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "$label: ",
+            style: GoogleFonts.ubuntu(fontWeight: FontWeight.w600),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: GoogleFonts.ubuntu(),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

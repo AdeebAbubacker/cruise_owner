@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -47,6 +47,9 @@ class _BookingsScreenState extends State<BookingsScreen> {
       listener: (context, state) {
         state.mapOrNull(
           getCruiseTypes: (value) {
+            context
+                .read<SeeMyBookingListBloc>()
+                .add(SeeMyBookingListEvent.getBookingList());
             CustomToast.showFlushBar(
               context: context,
               status: true,
@@ -433,13 +436,11 @@ class _BookingsScreenState extends State<BookingsScreen> {
                     }
                     return Column(
                       children: bookings.map((b) {
-                        bool isCancelled = b.fulfillmentStatus == 'Cancelled';
-                        final startDate = DateFormat('MMM d').format(
+                        bool isCancelled = b.bookedByUser == false;
+                        final startDate = DateFormat('MMM d, yyyy').format(
                             DateTime.parse(b.startDate.toString() ?? ''));
-                        final endDate = b.endDate != null
-                            ? DateFormat('d, yyyy').format(
-                                DateTime.parse(b.endDate.toString() ?? ''))
-                            : '';
+                        final endDate = DateFormat('MMM d, yyyy')
+                            .format(DateTime.parse(b.endDate.toString() ?? ''));
                         return ListTile(
                           leading: CircleAvatar(
                             backgroundColor: isCancelled
@@ -451,7 +452,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                             ),
                           ),
                           title: Text(
-                            isCancelled ? 'Booking Cancelled' : 'Booked',
+                            isCancelled ? 'Cruise Not Available' : 'Booked',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: isCancelled ? Colors.red : Colors.teal,
@@ -459,8 +460,10 @@ class _BookingsScreenState extends State<BookingsScreen> {
                           ),
                           subtitle: Text(
                             isCancelled
-                                ? 'Your booking on ${DateFormat('MMM d, yyyy').format(DateTime.parse(b.startDate.toString() ?? ''))} has been cancelled.'
-                                : 'Your houseboat is booked for $startDate - $endDate.',
+                                ? 'You already have a trip on ${DateFormat('MMM d, yyyy').format(DateTime.parse(b.startDate.toString() ?? ''))}'
+                                : (startDate == endDate
+                                    ? 'Your houseboat is booked for $startDate'
+                                    : 'Your houseboat is booked from $startDate to $endDate'),
                           ),
                           trailing: const Icon(Icons.edit, size: 18),
                         );

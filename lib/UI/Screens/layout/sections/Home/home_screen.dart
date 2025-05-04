@@ -334,12 +334,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Upcoming Bookings",
-                                  style: GoogleFonts.ubuntu(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  )),
+                              Text(
+                                splitIntoTwoLines("Upcoming Bookings"),
+                                style: GoogleFonts.ubuntu(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 2,
+                              ),
                               SizedBox(height: 8),
                               BlocBuilder<UpcomgBookingscountBloc,
                                   UpcomgBookingscountState>(
@@ -498,6 +501,64 @@ class BookingHistoryScreen extends StatelessWidget {
   ];
 
   BookingHistoryScreen({super.key});
+  List<double> _scales = [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ];
+
+  void _initScales(int length) {
+    _scales = List.generate(length, (_) => 1.0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -537,45 +598,68 @@ class BookingHistoryScreen extends StatelessWidget {
                   );
                 },
                 getuseruccess: (value) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: value.userprofilemodel.data?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      print(
-                          "name '${value.userprofilemodel.data?[index].user?.name}");
-                      final transaction = value.userprofilemodel.data?[index];
-                      final user = transaction?.user;
-                      final GlobalKey qrKey = GlobalKey();
-                      return GestureDetector(
-                        onTap: () {
-                          if (user != null) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => BookingDetailsPopup(
-                                booking: value.userprofilemodel.data?[index] ??
-                                    BookingData(),
-                                qrKey: qrKey,
+                  if (_scales.length != value.userprofilemodel.data?.length) {
+                    _initScales(value.userprofilemodel.data?.length ?? 0);
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: value.userprofilemodel.data?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        print(
+                            "name '${value.userprofilemodel.data?[index].user?.name}");
+                        final transaction = value.userprofilemodel.data?[index];
+                        final user = transaction?.user;
+                        final GlobalKey qrKey = GlobalKey();
+                        return StatefulBuilder(
+                            builder: (context, setInnerState) {
+                          return GestureDetector(
+                            onTapDown: (_) {
+                              setInnerState(() => _scales[index] = 0.97);
+                            },
+                            onTapCancel: () {
+                              setInnerState(() => _scales[index] = 1.0);
+                            },
+                            onTapUp: (_) {
+                              setInnerState(() => _scales[index] = 1.0);
+
+                              if (user != null) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => BookingDetailsPopup(
+                                    booking:
+                                        value.userprofilemodel.data?[index] ??
+                                            BookingData(),
+                                    qrKey: qrKey,
+                                  ),
+                                );
+                              } else {
+                                CustomToast.showFlushBar(
+                                    context: context,
+                                    status: false,
+                                    title: "Sorry",
+                                    content: "No Details available");
+                              }
+                            },
+                            child: AnimatedScale(
+                              duration: const Duration(milliseconds: 120),
+                              scale: _scales[index],
+                              curve: Curves.easeOut,
+                              child: TransactionTile(
+                                name:
+                                    '${value.userprofilemodel.data?[index].user?.name}',
+                                transactionId:
+                                    '${value.userprofilemodel.data?[index].invoiceId}',
+                                time:
+                                    '${value.userprofilemodel.data?[index].startDate}',
                               ),
-                            );
-                          } else {
-                            CustomToast.showFlushBar(
-                                context: context,
-                                status: false,
-                                title: "",
-                                content: "content");
-                          }
-                        },
-                        child: TransactionTile(
-                          name:
-                              '${value.userprofilemodel.data?[index].user?.name}',
-                          transactionId:
-                              '${value.userprofilemodel.data?[index].invoiceId}',
-                          time:
-                              '${value.userprofilemodel.data?[index].startDate}',
-                        ),
-                      );
-                    },
+                            ),
+                          );
+                        });
+                      },
+                    ),
                   );
                 },
                 getuserFailure: (value) {
@@ -639,15 +723,12 @@ class TransactionTile extends StatelessWidget {
         children: [
           Column(
             children: [
-              SvgPicture.asset(
-                "assets/CircledArrow.svg",
-                width: 40,
-              ),
+              BlinkingArrowIcon(name: name),
               SizedBox(
                 width: 85,
                 child: Text(
                   formatDateWithSuffix(time),
-                  style: GoogleFonts.ubuntu(fontSize: 12),
+                  style: GoogleFonts.ubuntu(fontSize: 10),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -658,8 +739,12 @@ class TransactionTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                name ?? '',
+                (name == null || name == 'null')
+                    ? 'N/A'
+                    : (name.trim().isEmpty ? 'N/A' : name),
                 style: GoogleFonts.ubuntu(fontWeight: FontWeight.bold),
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
               ),
               Text(
                 "Transaction ID: $transactionId",
@@ -668,15 +753,25 @@ class TransactionTile extends StatelessWidget {
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+                softWrap: false,
               ),
               SizedBox(height: 20),
             ],
           ),
           Spacer(),
-          Text(
-            "Booked",
-            style: GoogleFonts.ubuntu(color: Colors.green),
-          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(
+              (name == null || name == 'null' || name.trim().isEmpty)
+                  ? 'Pending'
+                  : 'Booked',
+              style: GoogleFonts.ubuntu(
+                color: (name == null || name == 'null' || name.trim().isEmpty)
+                    ? Colors.red
+                    : Colors.green,
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -684,3 +779,58 @@ class TransactionTile extends StatelessWidget {
 }
 
 //Cruise@2025
+class BlinkingArrowIcon extends StatefulWidget {
+  final String? name;
+
+  const BlinkingArrowIcon({super.key, this.name});
+
+  @override
+  State<BlinkingArrowIcon> createState() => _BlinkingArrowIconState();
+}
+
+class _BlinkingArrowIconState extends State<BlinkingArrowIcon>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _opacityAnimation;
+
+  bool get isBlue => widget.name != null && widget.name != 'null';
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _opacityAnimation =
+        Tween<double>(begin: 1.0, end: 0.3).animate(_controller);
+
+    if (isBlue) {
+      _controller.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final color =
+        isBlue ? Colors.green : const Color.fromARGB(255, 144, 209, 239);
+
+    final arrow = SvgPicture.asset(
+      "assets/CircledArrow.svg",
+      width: 40,
+      color: color,
+    );
+
+    return isBlue
+        ? FadeTransition(opacity: _opacityAnimation, child: arrow)
+        : arrow;
+  }
+}

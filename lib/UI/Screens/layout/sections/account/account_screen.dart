@@ -289,6 +289,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 StyledPhoneNumberField(
                   controller: phoneController,
                   focusNode: phoneNoFocusnode,
+                  fullPhoneNumber: phoneController.text,
                   onChanged: (value) {
                     print('Phone: $value');
                   },
@@ -394,7 +395,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     title:
                         Text('App Version', style: TextStyles.ubuntu15normal),
                     trailing: Text(
-                      "v1.0.17",
+                      "v1.0.21",
                       style: TextStyles.ubuntu15normal,
                     ),
                   ),
@@ -558,23 +559,69 @@ class StyledPhoneNumberField extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final Function(String)? onChanged;
+  final String? fullPhoneNumber; // e.g., "+919776878675"
 
   const StyledPhoneNumberField({
     super.key,
     required this.controller,
     required this.focusNode,
     this.onChanged,
+    this.fullPhoneNumber,
   });
+
+  // Helper to extract country code to ISO map
+  String getCountryISOCode(String dialCode) {
+    const countryCodeMap = {
+      '91': 'IN',
+      '1': 'US',
+      '44': 'GB',
+      '971': 'AE',
+      '61': 'AU',
+      '81': 'JP',
+      // Add more as needed
+    };
+    return countryCodeMap[dialCode] ?? 'IN'; // fallback to IN
+  }
 
   @override
   Widget build(BuildContext context) {
+    String initialIsoCode = 'IN';
+    String initialNationalNumber = '';
+
+    const dialCodeToIso = {
+      '1': 'US',
+      '44': 'GB',
+      '61': 'AU',
+      '81': 'JP',
+      '91': 'IN',
+      '971': 'AE',
+      // Add more if needed
+    };
+
+    if (fullPhoneNumber != null && fullPhoneNumber!.startsWith('+')) {
+      final cleaned = fullPhoneNumber!.substring(1); // Remove '+'
+
+      // Sort dial codes by length (desc) so longer ones like '971' are matched first
+      final sortedDialCodes = dialCodeToIso.keys.toList()
+        ..sort((a, b) => b.length.compareTo(a.length));
+
+      for (final code in sortedDialCodes) {
+        if (cleaned.startsWith(code)) {
+          initialIsoCode = dialCodeToIso[code]!;
+          initialNationalNumber = cleaned.substring(code.length);
+          break;
+        }
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: IntlPhoneField(
-          controller: controller,
           focusNode: focusNode,
+          initialCountryCode: initialIsoCode,
+          initialValue: initialNationalNumber,
           decoration: InputDecoration(
             hintText: 'Enter phone number',
             hintStyle: TextStyle(color: Colors.grey),
@@ -591,14 +638,12 @@ class StyledPhoneNumberField extends StatelessWidget {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25),
-              borderSide: const BorderSide(
-                color: Color(0xFFFFC1C1), // light red
-                width: 1.5,
-              ),
+              borderSide:
+                  const BorderSide(color: Color(0xFFFFC1C1), width: 1.5),
             ),
           ),
-          initialCountryCode: 'IN',
           onChanged: (phone) {
+            controller.text = phone.completeNumber; // +91xxxxxxxxxx
             if (onChanged != null) onChanged!(phone.completeNumber);
           },
         ),

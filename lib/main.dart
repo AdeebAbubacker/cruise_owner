@@ -136,7 +136,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          textTheme: GoogleFonts.ubuntuTextTheme(
+          textTheme: GoogleFonts.rubikTextTheme(
             Theme.of(context)
                 .textTheme, // Use the default text theme and apply the Ubuntu font
           ),
