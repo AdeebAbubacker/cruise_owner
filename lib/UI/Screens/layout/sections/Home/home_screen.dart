@@ -44,16 +44,63 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      BlocProvider.of<GetUserProfileBloc>(context)
-          .add(GetUserProfileEvent.getUserProfile());
-      BlocProvider.of<SeeMyBookingListBloc>(context)
-          .add(SeeMyBookingListEvent.getBookingList());
-      BlocProvider.of<TodaysBookingCountBloc>(context)
-          .add(TodaysBookingCountEvent.getTodayscount());
-      BlocProvider.of<UpcomgBookingscountBloc>(context)
-          .add(UpcomgBookingscountEvent.getUpcomingcount());
-      BlocProvider.of<ListownerPackagesBloc>(context)
-          .add(ListownerPackagesEvent.listPackages());
+      final getUserprofileBloc = BlocProvider.of<GetUserProfileBloc>(context);
+      final seeMybookingListBloc =
+          BlocProvider.of<SeeMyBookingListBloc>(context);
+      final todaysCountBloc = BlocProvider.of<TodaysBookingCountBloc>(context);
+      final upcomingCountBloc =
+          BlocProvider.of<UpcomgBookingscountBloc>(context);
+
+      final listOwnerPackagesBloc =
+          BlocProvider.of<ListownerPackagesBloc>(context);
+      //1//--------------------
+
+      final isuserProfileAlreadyLoaded = getUserprofileBloc.state.maybeWhen(
+        getuseruccess: (_) => true,
+        orElse: () => false,
+      );
+
+      if (!isuserProfileAlreadyLoaded) {
+        getUserprofileBloc.add(GetUserProfileEvent.getUserProfile());
+      }
+      //2//--------------------
+
+      final isbookingListalreadyLoaded = seeMybookingListBloc.state.maybeWhen(
+        getuseruccess: (_) => true,
+        orElse: () => false,
+      );
+
+      if (!isbookingListalreadyLoaded) {
+        seeMybookingListBloc.add(SeeMyBookingListEvent.getBookingList());
+      }
+      //3//--------------------
+      final istodaysCountLoaded = todaysCountBloc.state.maybeWhen(
+        todaysCount: (_) => true,
+        orElse: () => false,
+      );
+
+      if (!istodaysCountLoaded) {
+        todaysCountBloc.add(TodaysBookingCountEvent.getTodayscount());
+      }
+      //4//--------------------
+      final isupcomingCountLoaded = upcomingCountBloc.state.maybeWhen(
+        upcmingCount: (_) => true,
+        orElse: () => false,
+      );
+
+      if (!isupcomingCountLoaded) {
+        upcomingCountBloc.add(UpcomgBookingscountEvent.getUpcomingcount());
+      }
+      //5//--------------------
+      final islistOwnerPackagesoaded = listOwnerPackagesBloc.state.maybeWhen(
+        listpackages: (_) => true,
+        orElse: () => false,
+      );
+
+      if (!islistOwnerPackagesoaded) {
+        listOwnerPackagesBloc.add(ListownerPackagesEvent.listPackages());
+      }
+
       checkForUpdate();
     });
     super.initState();

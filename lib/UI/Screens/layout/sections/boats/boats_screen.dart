@@ -17,11 +17,20 @@ class BoatsScreen extends StatefulWidget {
 class _BoatsScreenState extends State<BoatsScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      BlocProvider.of<ListownerPackagesBloc>(context)
-          .add(ListownerPackagesEvent.listPackages());
-    });
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final seeMybookingBloc = BlocProvider.of<ListownerPackagesBloc>(context);
+
+      final isAlreadyLoaded = seeMybookingBloc.state.maybeWhen(
+        listpackages: (_) => true,
+        orElse: () => false,
+      );
+
+      if (!isAlreadyLoaded) {
+        seeMybookingBloc.add(ListownerPackagesEvent.listPackages());
+      }
+    });
   }
 
   void _initScales(int length) {

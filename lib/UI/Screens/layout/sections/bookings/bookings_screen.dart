@@ -36,9 +36,19 @@ class _BookingsScreenState extends State<BookingsScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch booking list from the BLoC
-    BlocProvider.of<SeeMyBookingListBloc>(context)
-        .add(SeeMyBookingListEvent.getBookingList());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final seeMybookingBloc = BlocProvider.of<SeeMyBookingListBloc>(context);
+
+      final isAlreadyLoaded = seeMybookingBloc.state.maybeWhen(
+        getuseruccess: (_) => true,
+        orElse: () => false,
+      );
+
+      if (!isAlreadyLoaded) {
+        seeMybookingBloc.add(SeeMyBookingListEvent.getBookingList());
+      }
+    });
   }
 
   @override
@@ -406,7 +416,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                             padding: const EdgeInsets.all(5.0),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 255, 129, 129),
+                                color: const Color.fromARGB(255, 233, 66, 66),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               alignment: Alignment.center,
