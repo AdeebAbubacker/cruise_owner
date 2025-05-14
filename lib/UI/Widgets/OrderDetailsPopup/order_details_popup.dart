@@ -40,7 +40,19 @@ class BookingDetailsPopup extends StatelessWidget {
           _infoRow('Name', booking.user?.name ?? 'N/A'),
           _infoRow('Email', booking.user?.email ?? 'N/A'),
           _infoRow('Phone', booking.user?.phoneNumber ?? 'N/A'),
-
+          _infoRow('Veg',
+              booking.vegCount != null ? booking.vegCount.toString() : 'N/A'),
+          _infoRow(
+              'Non Veg',
+              booking.nonVegCount != null
+                  ? booking.nonVegCount.toString()
+                  : 'N/A'),
+          _infoRow(
+              'Jain Veg',
+              booking.jainVegCount != null
+                  ? booking.jainVegCount.toString()
+                  : 'N/A'),
+          _infoRow('Add on', booking.customerNote ?? '(No Add ons)'),
           _infoRow('Total', '₹${booking.totalAmount ?? 'N/A'}'),
         ],
       ),
