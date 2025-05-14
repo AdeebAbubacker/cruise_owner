@@ -406,7 +406,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                             padding: const EdgeInsets.all(5.0),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: const Color(0xffb8e8e1),
+                                color: const Color.fromARGB(255, 255, 129, 129),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               alignment: Alignment.center,
