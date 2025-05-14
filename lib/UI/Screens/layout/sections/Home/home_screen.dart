@@ -13,7 +13,6 @@ import 'package:cruise_buddy/core/db/hive_db/boxes/package_details_box.dart';
 import 'package:cruise_buddy/core/db/hive_db/boxes/user_details_box.dart';
 import 'package:cruise_buddy/core/model/get_my_booking_list/get_my_booking_list.dart';
 import 'package:cruise_buddy/core/model/list_my_cruise_model/package.dart';
-import 'package:cruise_buddy/core/view_model/getUserProfile/get_user_profile_bloc.dart';
 import 'package:cruise_buddy/core/view_model/listOwnerpackages/listowner_packages_bloc.dart';
 import 'package:cruise_buddy/core/view_model/seeMyBookingList/see_my_booking_list_bloc.dart';
 import 'package:cruise_buddy/core/view_model/todaysbookingcount/todays_booking_count_bloc.dart';
@@ -44,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final getUserprofileBloc = BlocProvider.of<GetUserProfileBloc>(context);
       final seeMybookingListBloc =
           BlocProvider.of<SeeMyBookingListBloc>(context);
       final todaysCountBloc = BlocProvider.of<TodaysBookingCountBloc>(context);
@@ -53,16 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       final listOwnerPackagesBloc =
           BlocProvider.of<ListownerPackagesBloc>(context);
-      //1//--------------------
 
-      final isuserProfileAlreadyLoaded = getUserprofileBloc.state.maybeWhen(
-        getuseruccess: (_) => true,
-        orElse: () => false,
-      );
-
-      if (!isuserProfileAlreadyLoaded) {
-        getUserprofileBloc.add(GetUserProfileEvent.getUserProfile());
-      }
       //2//--------------------
 
       final isbookingListalreadyLoaded = seeMybookingListBloc.state.maybeWhen(

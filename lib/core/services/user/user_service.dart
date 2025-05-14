@@ -18,44 +18,44 @@ class UserService {
     // Bearer token will be added dynamically to the headers
   };
 
-  Future<Either<String, UserProfileModel>> getUserProfile() async {
-    try {
-      final hasInternet = await _connectivityChecker.hasInternetAccess();
-      if (!hasInternet) {
-        print("No internet");
-        return const Left('No internet');
-      }
+  // Future<Either<String, UserProfileModel>> getUserProfile() async {
+  //   try {
+  //     final hasInternet = await _connectivityChecker.hasInternetAccess();
+  //     if (!hasInternet) {
+  //       print("No internet");
+  //       return const Left('No internet');
+  //     }
 
-      // Retrieve the Bearer token from shared preferences
-      final token = await GetSharedPreferences.getAccessToken();
+  //     // Retrieve the Bearer token from shared preferences
+  //     final token = await GetSharedPreferences.getAccessToken();
 
-      if (token == null) {
-        print('No access token found.');
-        return const Left('No access token found.');
-      }
+  //     if (token == null) {
+  //       print('No access token found.');
+  //       return const Left('No access token found.');
+  //     }
 
-      // Add the Authorization Bearer token to the headers dynamically
-      _headers['Authorization'] = 'Bearer $token';
+  //     // Add the Authorization Bearer token to the headers dynamically
+  //     _headers['Authorization'] = 'Bearer $token';
 
-      final response = await http.get(
-        Uri.parse('$url/who-am-i'),
-        headers: _headers,
-      );
+  //     final response = await http.get(
+  //       Uri.parse('$url/who-am-i'),
+  //       headers: _headers,
+  //     );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = json.decode(response.body);
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       final data = json.decode(response.body);
 
-        final userprofile = UserProfileModel.fromJson(data);
+  //       final userprofile = UserProfileModel.fromJson(data);
 
-        return Right(userprofile);
-      } else {
-        print('Request failed: ${response.body.toLowerCase()}');
-        return Left('Failed to get cruise type: ${response.statusCode}');
-      }
-    } catch (e) {
-      return Left('Error: $e'); // Handling other errors
-    }
-  }
+  //       return Right(userprofile);
+  //     } else {
+  //       print('Request failed: ${response.body.toLowerCase()}');
+  //       return Left('Failed to get cruise type: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     return Left('Error: $e'); // Handling other errors
+  //   }
+  // }
 
   Future<Either<String, UserUpdateSuccesModel>> updateUserProfile({
     String? name,
