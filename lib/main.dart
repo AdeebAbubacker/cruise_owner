@@ -17,6 +17,7 @@ import 'package:cruise_buddy/core/db/hive_db/boxes/user_details_box.dart';
 import 'package:cruise_buddy/core/view_model/addItemToFavourites/add_item_to_favourites_bloc.dart';
 import 'package:cruise_buddy/core/view_model/bookMyCruise/book_my_cruise_bloc.dart';
 import 'package:cruise_buddy/core/view_model/createBookingByOwner/create_booking_by_owner_bloc.dart';
+import 'package:cruise_buddy/core/view_model/deleteAccount/delete_account_bloc.dart';
 import 'package:cruise_buddy/core/view_model/getCruiseTypes/get_cruise_types_bloc.dart';
 import 'package:cruise_buddy/core/view_model/getFavouritesList/get_favourites_list_bloc.dart';
 import 'package:cruise_buddy/core/view_model/getFeaturedBoats/get_featured_boats_bloc.dart';
@@ -120,6 +121,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CreateBookingByOwnerBloc(),
+        ),
+        BlocProvider(
+          create: (context) => DeleteAccountBloc(),
         ),
       ],
       child: MaterialApp(

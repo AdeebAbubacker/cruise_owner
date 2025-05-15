@@ -63,7 +63,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
             CustomToast.showFlushBar(
               context: context,
               status: true,
-              title: "COngrats",
+              title: "Congrats",
               content: "Your booking has been locked",
             );
           },
@@ -328,6 +328,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
           }
 
           return SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 // Calendar view
@@ -451,36 +452,43 @@ class _BookingsScreenState extends State<BookingsScreen> {
                             DateTime.parse(b.startDate.toString() ?? ''));
                         final endDate = DateFormat('MMM d, yyyy')
                             .format(DateTime.parse(b.endDate.toString() ?? ''));
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: isCancelled
-                                ? Colors.red[100]
-                                : Colors.teal[100],
-                            child: Icon(
-                              isCancelled ? Icons.close : Icons.directions_boat,
-                              color: isCancelled ? Colors.red : Colors.teal,
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: isCancelled
+                                  ? Colors.red[100]
+                                  : Colors.teal[100],
+                              child: Icon(
+                                isCancelled
+                                    ? Icons.close
+                                    : Icons.directions_boat,
+                                color: isCancelled ? Colors.red : Colors.teal,
+                              ),
+                            ),
+                            title: Text(
+                              isCancelled ? 'Cruise Not Available' : 'Booked',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: isCancelled ? Colors.red : Colors.teal,
+                              ),
+                            ),
+                            subtitle: Text(
+                              isCancelled
+                                  ? 'You already have a trip on ${DateFormat('MMM d, yyyy').format(DateTime.parse(b.startDate.toString() ?? ''))}'
+                                  : (startDate == endDate
+                                      ? 'Your houseboat is booked for $startDate'
+                                      : 'Your houseboat is booked from $startDate to $endDate'),
                             ),
                           ),
-                          title: Text(
-                            isCancelled ? 'Cruise Not Available' : 'Booked',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: isCancelled ? Colors.red : Colors.teal,
-                            ),
-                          ),
-                          subtitle: Text(
-                            isCancelled
-                                ? 'You already have a trip on ${DateFormat('MMM d, yyyy').format(DateTime.parse(b.startDate.toString() ?? ''))}'
-                                : (startDate == endDate
-                                    ? 'Your houseboat is booked for $startDate'
-                                    : 'Your houseboat is booked from $startDate to $endDate'),
-                          ),
-                          trailing: const Icon(Icons.edit, size: 18),
                         );
                       }).toList(),
                     );
                   },
                 ),
+                SizedBox(height: 80)
               ],
             ),
           );
